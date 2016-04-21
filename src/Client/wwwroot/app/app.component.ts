@@ -2,6 +2,6 @@
 
 @Component({
     selector: 'main-app',
-    template: '<h1>Hello World!</h1>'
+    templateUrl: 'app/app.view.html'
 })
 export class AppComponent {}
