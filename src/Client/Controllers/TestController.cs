@@ -11,7 +11,7 @@ namespace Client.Controllers
         [HttpGet]
         public string About()
         {
-            return "Szevasz";
+            return "Szevasz!";
         }
     }
 }
