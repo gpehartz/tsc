@@ -10,6 +10,7 @@ namespace Client
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvcCore();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -18,6 +19,10 @@ namespace Client
             app.UseIISPlatformHandler();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "api/{controller=Test}/{action=About}");
+            });
         }
 
         // Entry point for the application.
