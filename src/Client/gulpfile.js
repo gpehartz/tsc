@@ -16,6 +16,7 @@ var paths = {
     npm: './node_modules/',
     scripts: './wwwroot/**/*.ts',
     lib: './wwwroot/lib',
+    fonts: './wwwroot/lib/fonts',
     css: './wwwroot/lib/css',
     appdev: './wwwroot/'
 };
@@ -39,10 +40,15 @@ var styleSheets = [
     paths.npm + 'bootstrap/dist/css/bootstrap.css'
 ];
 
+var fonts = [
+    paths.npm + 'bootstrap/dist/fonts/*.*'
+];
+
 gulp.task('copy:libs', function () {
     var libStream = gulp.src(dependencies).pipe(gulp.dest(paths.lib));
     var stylesStream = gulp.src(styleSheets).pipe(gulp.dest(paths.css));
-    return mergeStream(libStream, stylesStream);
+    var fontsStream = gulp.src(fonts).pipe(gulp.dest(paths.fonts));
+    return mergeStream(libStream, stylesStream, fontsStream);
 });
 
 gulp.task('clean:libs', function (callback) {

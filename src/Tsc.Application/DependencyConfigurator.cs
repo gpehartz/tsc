@@ -1,0 +1,15 @@
+﻿using Tsc.Application.Services;
+using Tsc.Domain.ExternalServices;
+using Unity;
+
+namespace Tsc.Application
+{
+    public class DependencyConfigurator
+    {
+        internal void Configure(IUnityContainer unityContainer)
+        {
+            unityContainer.RegisterType<ITeamRepository, TeamRepository>();
+            unityContainer.RegisterType<ITournamentRepository, TournamentRepository>();
+        }
+    }
+}

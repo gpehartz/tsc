@@ -1,0 +1,43 @@
+﻿<h2>Új bajnokság létrehozása</h2>
+
+<form [ngFormModel]="addTournamentForm">
+    <div class="form-group has-feedback"
+         [ngClass]="{
+                     'has-success': addTournamentForm.controls['inputTournamentName'].touched && addTournamentForm.controls['inputTournamentName'].valid,
+                     'has-error': addTournamentForm.controls['inputTournamentName'].touched && !addTournamentForm.controls['inputTournamentName'].valid
+                    }">
+        
+        <label for="inputTournamentName">Név</label>
+
+        <input type="text" id="inputTournamentName" ngControl="inputTournamentName" #inputTournamentName="ngForm" class="form-control" [(ngModel)]="name"
+               placeholder="Bajnokság neve" />
+
+        <span *ngIf="inputTournamentName.touched" class="glyphicon form-control-feedback"
+              [ngClass]="{
+                          'glyphicon-ok': inputTournamentName.valid,
+                          'glyphicon-remove': !inputTournamentName.valid
+                         }"
+              aria-hidden="true">
+        </span>
+
+        <div *ngIf="inputTournamentName.touched && inputTournamentName.errors">           
+            <div *ngIf="inputTournamentName.errors.required" class="alert alert-danger">A bajnokság neve kötelező!</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="tournamentLogo">Logó</label>
+        <input type="file" id="tournamentLogo">
+        <p class="help-block">Válassz logót a bajnoksághoz.</p>
+    </div>
+
+    <div class="form-group">
+        <label>Csapatok</label>
+        <p class="help-block">Válaszd ki a részt vevő csapatokat.</p>
+    </div>
+</form>
+
+<div>
+    <a class="btn btn-primary" (click)="cancel()">Mégse</a>
+    <a class="btn btn-primary" [ngClass]="{'disabled': !addTournamentForm.valid}" (click)="save()">Mentés</a>
+</div>
