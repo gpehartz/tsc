@@ -10,6 +10,7 @@ namespace Tsc.Application
         {
             unityContainer.RegisterType<ITeamRepository, TeamRepository>();
             unityContainer.RegisterType<ITournamentRepository, TournamentRepository>();
+            unityContainer.RegisterType<ITranslator, Translator>();
         }
     }
 }

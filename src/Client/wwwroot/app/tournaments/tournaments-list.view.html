@@ -10,6 +10,19 @@
         <th></th>
     </tr>
     </thead>
+    <tbody>
+        <tr *ngFor="#tournament of tournaments">
+            <td>{{tournament.name}}</td>
+            <td></td>
+            <td>{{tournament.creationDate}}</td>
+            <td class="text-center">
+                <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-option-horizontal"></i></button>
+            </td>
+            <td class="text-center">
+                <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
+            </td>
+        </tr>
+    </tbody>
 </table>
 
 <a class="btn btn-primary" (click)="addTournament()">Új bajnokság</a>

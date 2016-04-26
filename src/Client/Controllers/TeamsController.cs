@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 using Tsc.Application;
-using Tsc.Domain;
+using Tsc.Application.ServiceModel;
 
 namespace Client.Controllers
 {

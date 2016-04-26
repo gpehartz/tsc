@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Tsc.Domain.ExternalServices
 {
     public interface ITournamentRepository
     {
+        void Save(Tournament tournament);
+        IEnumerable<Tournament> GetAllTournaments();
     }
 }

@@ -9,7 +9,7 @@
         
         <label for="inputTournamentName">Név</label>
 
-        <input type="text" id="inputTournamentName" ngControl="inputTournamentName" #inputTournamentName="ngForm" class="form-control" [(ngModel)]="name"
+        <input type="text" id="inputTournamentName" ngControl="inputTournamentName" #inputTournamentName="ngForm" class="form-control" [(ngModel)]="tournamentName"
                placeholder="Bajnokság neve" />
 
         <span *ngIf="!addTournamentForm.pristine" class="glyphicon form-control-feedback"
@@ -37,7 +37,7 @@
 
         <div *ngFor="#teamWithSelection of teamsWithSelection; #i=index">
             <div class="checkbox">
-                <label><input type="checkbox" ngControl="{{teamWithSelection.team.id}}" />{{teamWithSelection.team.name}}</label>
+                <label><input type="checkbox" ngControl="{{teamWithSelection.team.id}}" [(ngModel)]="teamWithSelection.isSelected" />{{teamWithSelection.team.name}}</label>
             </div>
         </div>
 

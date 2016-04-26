@@ -4,8 +4,10 @@ import {FormBuilder, Validators, Control, ControlGroup} from 'angular2/common';
 
 
 import {ITeamService, TeamServiceToken} from '../services/team.service';
+import {ITournamentService, TournamentServiceToken} from '../services/tournament.service';
 import {TeamWithSelection} from '../models/teamWithSelection';
 import {Team} from '../models/team';
+import {Tournament} from '../models/tournament';
 
 
 @Component({
@@ -13,12 +15,13 @@ import {Team} from '../models/team';
 })
 export class AddTournamentComponent implements OnInit {
     addTournamentForm: ControlGroup;
-    name: string;
+    tournamentName: string;
     teamsWithSelection: TeamWithSelection[];
 
     constructor(private _router: Router,
         private _fb: FormBuilder,
-        @Inject(TeamServiceToken) private _service: ITeamService) {
+        @Inject(TeamServiceToken) private _teamService: ITeamService,
+        @Inject(TournamentServiceToken) private _tournamentService: ITournamentService) {
 
         this.addTournamentForm = this._fb.group({
             inputTournamentName: ["", Validators.required],
@@ -27,7 +30,7 @@ export class AddTournamentComponent implements OnInit {
     };
 
     ngOnInit() {
-        this._service.getTeams().subscribe(item => {
+        this._teamService.getTeams().subscribe(item => {
             var teams = <Team[]>item.json();
             this.teamsWithSelection = new Array();
 
@@ -47,7 +50,7 @@ export class AddTournamentComponent implements OnInit {
     save() {
         var selectedTeams = this.teamsWithSelection.filter(item => item.isSelected).map(item => item.team);
 
-
+        this._tournamentService.addTournament(new Tournament(this.tournamentName, selectedTeams)).subscribe(item => this._router.navigate(['TournamentsCenter']));
     }
 
     static validateTeamSelection(group: ControlGroup) {
