@@ -39,6 +39,13 @@ namespace Tsc.Application
             return unityContainer;
         }
 
+        public void AddTeam(Team team)
+        {
+            var domainTeam = _translator.TranslateToDomainNew(team);
+
+            _teamRepository.Save(domainTeam);
+        }
+
         public void AddTournament(Tournament tournament)
         {
             var domainTournament = _translator.TranslateToDomainNew(tournament);

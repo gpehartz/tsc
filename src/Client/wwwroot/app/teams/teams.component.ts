@@ -1,13 +1,17 @@
-﻿import {Component} from 'angular2/core';
+﻿import {Component, provide} from 'angular2/core';
 import {RouteConfig, RouterOutlet} from 'angular2/router';
 
 import {TeamsListComponent} from './teams-list.component';
+import {TeamService, TeamServiceToken} from '../services/team.service';
+import {AddTeamComponent} from './add-team.component';
 
 @Component({
     templateUrl: 'app/teams/teams.view.html',
-    directives: [RouterOutlet]
+    directives: [RouterOutlet],
+    providers: [provide(TeamServiceToken, { useClass: TeamService })]
 })
 @RouteConfig([
-    { path: '/', name: 'TeamsCenter', component: TeamsListComponent, useAsDefault: true }
+        { path: '/', name: 'TeamsCenter', component: TeamsListComponent, useAsDefault: true },
+        { path: '/new', name: 'TeamCreator', component: AddTeamComponent },
 ])
 export class TeamsComponent { }

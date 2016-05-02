@@ -4,6 +4,24 @@ namespace Tsc.Application
 {
     public class Translator : ITranslator
     {
+        public Domain.Team TranslateToDomain(ServiceModel.Team team)
+        {
+            return new Domain.Team(team.Id, team.Name, team.CreationDate);
+        }
+
+        public Domain.Team TranslateToDomainNew(ServiceModel.Team team)
+        {
+            var domainTeam = new Domain.Team(team.Name);
+            domainTeam.AddUser(team.Users.Select(TranslateToDomain));
+
+            return domainTeam;
+        }
+
+        public Domain.User TranslateToDomain(ServiceModel.User user)
+        {
+            return new Domain.User(user.Id, user.Name);
+        }
+
         public Domain.Tournament TranslateToDomain(ServiceModel.Tournament tournament)
         {
             var domainTournament = new Domain.Tournament(tournament.Id, tournament.Name, tournament.CreationDate);
@@ -29,11 +47,6 @@ namespace Tsc.Application
                 Participants = tournament.Participants.Select(TranslateToService).ToList(),
                 CreationDate = tournament.CreationDate
             };
-        }
-
-        public Domain.Team TranslateToDomain(ServiceModel.Team team)
-        {
-            return new Domain.Team(team.Id, team.Name);
         }
 
         public ServiceModel.Team TranslateToService(Domain.Team team)

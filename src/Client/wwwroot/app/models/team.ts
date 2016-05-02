@@ -1,5 +1,8 @@
-﻿export class Team {
-    id: string;
+﻿import {User} from './user';
 
-    constructor(public name: string) { }
+export class Team {
+    id: string;
+    creationDate: Date;
+
+    constructor(public name: string, public users: User[]) { }
 }

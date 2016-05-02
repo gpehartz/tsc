@@ -4,6 +4,8 @@
     {
         Domain.Team TranslateToDomain(ServiceModel.Team team);
 
+        Domain.Team TranslateToDomainNew(ServiceModel.Team team);
+
         Domain.Tournament TranslateToDomain(ServiceModel.Tournament tournament);
 
         Domain.Tournament TranslateToDomainNew(ServiceModel.Tournament tournament);
