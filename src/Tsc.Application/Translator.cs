@@ -11,10 +11,7 @@ namespace Tsc.Application
 
         public Domain.Team TranslateToDomainNew(ServiceModel.Team team)
         {
-            var domainTeam = new Domain.Team(team.Name);
-            domainTeam.AddUser(team.Users.Select(TranslateToDomain));
-
-            return domainTeam;
+            return new Domain.Team(team.Name, team.Users.Select(TranslateToDomain));
         }
 
         public Domain.User TranslateToDomain(ServiceModel.User user)

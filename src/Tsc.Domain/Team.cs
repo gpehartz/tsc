@@ -5,7 +5,7 @@ namespace Tsc.Domain
 {
     public class Team
     {
-        private List<User> _users;
+        private readonly List<User> _users;
 
         public Guid Id { get; private set; }
 
@@ -19,11 +19,6 @@ namespace Tsc.Domain
             {
                 return _users.AsReadOnly();
             }
-        }
-
-        public void AddUser(IEnumerable<User> users)
-        {
-            _users.AddRange(users);
         }
 
         /// <summary>
@@ -44,13 +39,16 @@ namespace Tsc.Domain
         /// For new
         /// </summary>
         /// <param name="name"></param>
-        public Team(string name)
+        /// <param name="users"></param>
+        public Team(string name, IEnumerable<User> users)
             :this()
         {
             Name = name;
 
             Id = Guid.NewGuid();
             CreationDate = DateTime.Now;
+
+            _users.AddRange(users);
         }
 
         private Team()
@@ -58,6 +56,6 @@ namespace Tsc.Domain
             _users = new List<User>();
         }
 
-        public static Team DummyTeam = new Team(Guid.NewGuid(), "N/A");
+        public static readonly Team DummyTeam = new Team("N/A", new List<User>());
     }
 }
