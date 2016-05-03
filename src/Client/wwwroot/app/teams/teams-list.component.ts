@@ -2,7 +2,7 @@
 import {Router} from 'angular2/router';
 
 import {ITeamService, TeamServiceToken} from '../services/team.service';
-import {Team} from '../models/team';
+import {Team} from '../servicemodels/team';
 
 @Component({
     templateUrl: 'app/teams/teams-list.view.html'
