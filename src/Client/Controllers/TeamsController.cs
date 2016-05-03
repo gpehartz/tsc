@@ -20,5 +20,11 @@ namespace Client.Controllers
         {
             return _application.GetAllTeams();
         }
+
+        [HttpPost]
+        public void Post([FromBody]Team team)
+        {
+            _application.AddTeam(team);
+        }
     }
 }

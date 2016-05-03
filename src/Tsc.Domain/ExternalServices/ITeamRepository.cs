@@ -4,6 +4,7 @@ namespace Tsc.Domain.ExternalServices
 {
     public interface ITeamRepository
     {
-        List<Team> GetAllTeams();
+        void Save(Team team);
+        IEnumerable<Team> GetAllTeams();
     }
 }
