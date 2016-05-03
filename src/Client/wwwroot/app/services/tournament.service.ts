@@ -2,12 +2,12 @@
 import {Http, Headers, Response} from 'angular2/http'
 import {Observable} from 'rxjs/Observable';
 
-import {Tournament} from '../models/tournament';
+import {Tournament} from '../servicemodels/tournament';
 
 export interface ITournamentService {
     getTournaments(): Observable<Response>;
 
-    getTournament(id: number): Observable<Response>;
+    getTournament(id: string): Observable<Response>;
 
     addTournament(tournament: Tournament): Observable<Response>;
 }
@@ -23,7 +23,7 @@ export class TournamentService implements ITournamentService {
         return this._http.get('http://localhost:8081/api/tournaments');
     }
 
-    getTournament(id: number) {
+    getTournament(id: string) {
         return this._http.get('http://localhost:8081/api/tournaments/' + id);
     }
 

@@ -5,9 +5,9 @@ import {FormBuilder, Validators, Control, ControlGroup} from 'angular2/common';
 
 import {ITeamService, TeamServiceToken} from '../services/team.service';
 import {ITournamentService, TournamentServiceToken} from '../services/tournament.service';
-import {TeamWithSelection} from '../models/teamWithSelection';
-import {Team} from '../models/team';
-import {Tournament} from '../models/tournament';
+import {TeamWithSelection} from '../models/teamwithselection';
+import {Team} from '../servicemodels/team';
+import {Tournament} from '../servicemodels/tournament';
 
 
 @Component({

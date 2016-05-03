@@ -1,0 +1,71 @@
+﻿<div *ngIf="tournament" class="row">
+    <h2>{{tournament.name}} - részletek</h2>
+
+    <br>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#table" aria-controls="table" role="tab" data-toggle="tab">Tabella</a></li>
+        <li role="presentation"><a href="#rounds" aria-controls="rounds" role="tab" data-toggle="tab">Fordulók</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="table">
+            <br />
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center col-sm-1">Pozíció</th>
+                        <th class="text-center"><div class="show-tooltip" title="Csapat neve">Név</div></th>
+                        <th class="text-center"><div class="show-tooltip" title="Játszott meccsek">J</div></th>
+                        <th class="text-center"><div class="show-tooltip" title="Győzelmek">Gy</div></th>
+                        <th class="text-center"><div class="show-tooltip" title="Döntetlenek">D</div></th>
+                        <th class="text-center"><div class="show-tooltip" title="Vereségek">V</div></th>
+                        <th class="text-center"><div class="show-tooltip" title="Rúgott gólok">R</div></th>
+                        <th class="text-center"><div class="show-tooltip" title="Kapott gólok">K</div></th>
+                        <th class="text-center"><div class="show-tooltip" title="Gólkülönbség">GK</div></th>
+                        <th class="text-center"><div class="show-tooltip" title="Pontok">P</div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="#tableItem of tournament.table">
+                        <td class="text-center">{{tableItem.position}}</td>
+                        <td>{{tableItem.teamName}}</td>
+                        <td class="text-center">{{tableItem.played}}</td>
+                        <td class="text-center">{{tableItem.won}}</td>
+                        <td class="text-center">{{tableItem.drawn}}</td>
+                        <td class="text-center">{{tableItem.lost}}</td>
+                        <td class="text-center">{{tableItem.goalsFor}}</td>
+                        <td class="text-center">{{tableItem.goalsAgainst}}</td>
+                        <td class="text-center">{{tableItem.goalDifference}}</td>
+                        <td class="text-center">{{tableItem.points}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="rounds">
+            <br />
+            <div class="row col-lg-6 col-md-8 col-sm-12">
+                <div *ngFor="#round of tournament.rounds">
+                    <h4>{{round.number}}. forduló</h4>
+
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr *ngFor="#fixture of round.fixtures">
+                                <td class="col-sm-6">{{fixture.homeTeam}}</td>
+                                <td>{{fixture.awayTeam}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="row">
+    <a class="btn btn-primary" (click)="back()">Vissza</a>
+</div>

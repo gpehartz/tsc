@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Tsc.Application.ServiceModel;
 using Tsc.Domain.ExternalServices;
@@ -41,7 +42,7 @@ namespace Tsc.Application
 
         public void AddTournament(Tournament tournament)
         {
-            var domainTournament = _translator.TranslateToDomainNew(tournament);
+            var domainTournament = _translator.TranslateToDomain(tournament);
 
             _tournamentRepository.Save(domainTournament);
         }
@@ -50,6 +51,12 @@ namespace Tsc.Application
         {
             var domainTournaments = _tournamentRepository.GetAllTournaments();
             return domainTournaments.Select(_translator.TranslateToService).ToList();
+        }
+
+        public Tournament GetTournament(Guid id)
+        {
+            var domainTournament = _tournamentRepository.GetTournament(id);
+            return _translator.TranslateToService(domainTournament);
         }
 
         public IEnumerable<Team> GetAllTeams()

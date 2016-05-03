@@ -13,5 +13,7 @@ namespace Tsc.Domain
             Id = id == Guid.Empty ? Guid.NewGuid() : id;
             Name = name;
         }
+
+        public static Team DummyTeam = new Team(Guid.NewGuid(), "N/A");
     }
 }
