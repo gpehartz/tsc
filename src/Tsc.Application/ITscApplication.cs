@@ -12,5 +12,7 @@ namespace Tsc.Application
         IEnumerable<Tournament> GetAllTournaments();
 
         IEnumerable<Team> GetAllTeams();
+
+        IEnumerable<User> GetAllUsers();
     }
 }

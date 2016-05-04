@@ -8,6 +8,7 @@ namespace Tsc.Application
     {
         internal void Configure(IUnityContainer unityContainer)
         {
+            unityContainer.RegisterType<IUserRepository, UserRepository>();
             unityContainer.RegisterType<ITeamRepository, TeamRepository>();
             unityContainer.RegisterType<ITournamentRepository, TournamentRepository>();
             unityContainer.RegisterType<ITranslator, Translator>();
