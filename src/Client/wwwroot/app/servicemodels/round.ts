@@ -1,5 +1,5 @@
-﻿import {FixtureItem} from './fixtureItem';
+﻿import {Fixture} from './fixture';
 
 export class Round {
-    constructor(number: number, fixtures: FixtureItem[]) { }
+    constructor(public number: number, public fixtures: Fixture[]) { }
 }

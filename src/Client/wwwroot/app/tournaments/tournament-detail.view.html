@@ -12,60 +12,78 @@
     <!-- Tab panes -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="table">
-            <br />
+            <br/>
+
             <table class="table table-bordered">
                 <thead>
-                    <tr>
-                        <th class="text-center col-sm-1">Pozíció</th>
-                        <th class="text-center"><div class="show-tooltip" title="Csapat neve">Név</div></th>
-                        <th class="text-center"><div class="show-tooltip" title="Játszott meccsek">J</div></th>
-                        <th class="text-center"><div class="show-tooltip" title="Győzelmek">Gy</div></th>
-                        <th class="text-center"><div class="show-tooltip" title="Döntetlenek">D</div></th>
-                        <th class="text-center"><div class="show-tooltip" title="Vereségek">V</div></th>
-                        <th class="text-center"><div class="show-tooltip" title="Rúgott gólok">R</div></th>
-                        <th class="text-center"><div class="show-tooltip" title="Kapott gólok">K</div></th>
-                        <th class="text-center"><div class="show-tooltip" title="Gólkülönbség">GK</div></th>
-                        <th class="text-center"><div class="show-tooltip" title="Pontok">P</div></th>
-                    </tr>
+                <tr>
+                    <th class="text-center col-sm-1">Pozíció</th>
+                    <th class="text-center">
+                        <div class="show-tooltip" title="Csapat neve">Név</div></th>
+                    <th class="text-center">
+                        <div class="show-tooltip" title="Lejátszott fordulók">J</div></th>
+                    <th class="text-center">
+                        <div class="show-tooltip" title="Győztes szettek">Gy</div></th>
+                    <th class="text-center">
+                        <div class="show-tooltip" title="Döntetlen szettek">D</div></th>
+                    <th class="text-center">
+                        <div class="show-tooltip" title="Vesztes szettek">V</div></th>
+                    <th class="text-center">
+                        <div class="show-tooltip" title="Rúgott gólok">R</div></th>
+                    <th class="text-center">
+                        <div class="show-tooltip" title="Kapott gólok">K</div></th>
+                    <th class="text-center">
+                        <div class="show-tooltip" title="Gólkülönbség">GK</div></th>
+                    <th class="text-center">
+                        <div class="show-tooltip" title="Pontok">P</div></th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="#tableItem of tournament.table">
-                        <td class="text-center">{{tableItem.position}}</td>
-                        <td>{{tableItem.teamName}}</td>
-                        <td class="text-center">{{tableItem.played}}</td>
-                        <td class="text-center">{{tableItem.won}}</td>
-                        <td class="text-center">{{tableItem.drawn}}</td>
-                        <td class="text-center">{{tableItem.lost}}</td>
-                        <td class="text-center">{{tableItem.goalsFor}}</td>
-                        <td class="text-center">{{tableItem.goalsAgainst}}</td>
-                        <td class="text-center">{{tableItem.goalDifference}}</td>
-                        <td class="text-center">{{tableItem.points}}</td>
-                    </tr>
+                <tr *ngFor="#tableItem of tournament.table">
+                    <td class="text-center"><b>{{tableItem.position}}</b></td>
+                    <td>{{tableItem.teamName}}</td>
+                    <td class="text-center">{{tableItem.played}}</td>
+                    <td class="text-center">{{tableItem.won}}</td>
+                    <td class="text-center">{{tableItem.drawn}}</td>
+                    <td class="text-center">{{tableItem.lost}}</td>
+                    <td class="text-center">{{tableItem.goalsFor}}</td>
+                    <td class="text-center">{{tableItem.goalsAgainst}}</td>
+                    <td class="text-center">{{tableItem.goalDifference}}</td>
+                    <td class="text-center"><b>{{tableItem.points}}</b></td>
+                </tr>
                 </tbody>
             </table>
         </div>
+
         <div role="tabpanel" class="tab-pane fade" id="rounds">
-            <br />
-            <div class="row col-lg-6 col-md-8 col-sm-12">
+            <br/>
+
+            <div class="row col-lg-8 col-md-10 col-sm-12">
                 <div *ngFor="#round of tournament.rounds">
                     <h4>{{round.number}}. forduló</h4>
-
                     <table class="table table-bordered">
                         <tbody>
-                            <tr *ngFor="#fixture of round.fixtures">
-                                <td class="col-sm-6">{{fixture.homeTeam}}</td>
-                                <td>{{fixture.awayTeam}}</td>
-                            </tr>
+                        <tr *ngFor="#fixture of round.fixtures">
+                            <td class="col-sm-5">{{fixture.homeTeam}}</td>
+                            <td class="col-sm-5">{{fixture.awayTeam}}</td>
+                            <td>
+                                <table class="table table-bordered">
+                                    <tr *ngFor="#result of fixture.results">
+                                        <td class="col-sm-6 text-center">{{result.homeGoals}}</td>
+                                        <td class="col-sm-6 text-center">{{result.awayGoals}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>
 
 <div class="row">
     <a class="btn btn-primary" (click)="back()">Vissza</a>
+    <a class="btn btn-primary" (click)="addResult()">Eredmény rögzítése</a>
 </div>

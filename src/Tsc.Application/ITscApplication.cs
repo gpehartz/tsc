@@ -15,5 +15,7 @@ namespace Tsc.Application
         Tournament GetTournament(Guid id);
 
         IEnumerable<Team> GetAllTeams();
+
+        void SetFixtureResult(Guid tournamentId, Guid fixtureId, IEnumerable<MatchResult> results);
     }
 }

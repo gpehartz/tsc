@@ -9,15 +9,20 @@ import {ITournamentService, TournamentServiceToken} from '../services/tournament
 })
 export class TournamentDetailComponent implements OnInit {
     tournament: Tournament;
-
+   
     constructor(private _router: Router,
         private _routeParams: RouteParams,
-        @Inject(TournamentServiceToken) private _tournamentService: ITournamentService) { }
+        @Inject(TournamentServiceToken) private _tournamentService: ITournamentService) {
+    }
 
     ngOnInit() {
         let id = this._routeParams.get('id');
 
         this._tournamentService.getTournament(id).subscribe(item => this.tournament = item.json());
+    }
+
+    addResult() {
+        this._router.navigate(['Fixtures', { id: this.tournament.id }]);
     }
 
     back() {

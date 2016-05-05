@@ -33,5 +33,11 @@ namespace Client.Controllers
         {
             _application.AddTournament(tournament);
         }
+
+        [HttpPut("{tournamentId}/fixtures/{fixtureId}")]
+        public void SetFixtureResult(Guid tournamentId, Guid fixtureId, [FromBody] Fixture fixture)
+        {
+            _application.SetFixtureResult(tournamentId, fixtureId, fixture.Results);
+        }
     }
 }
