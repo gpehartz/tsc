@@ -11,8 +11,9 @@ namespace Tsc.DataAccess
 {
     public class MongoRestTscDataAccess : ITscDataAccess
     {
-        private const string PersonsUrlPart = @"tsc/persons";
+        //private const string PersonsUrlPart = @"tsc/persons";
         private const string TeamsUrlPart = @"tsc/teams";
+        private const string TournamentsUrlPart = @"tsc/tournaments";
         private readonly string _url;
 
         public MongoRestTscDataAccess(string url)
@@ -30,6 +31,13 @@ namespace Tsc.DataAccess
             return client;
         }
 
+        private static JsonMediaTypeFormatter GetFormatter()
+        {
+            var resolver = new PrivateSetterJsonDefaultContractResolver();
+            var formatter = new JsonMediaTypeFormatter { SerializerSettings = { ContractResolver = resolver } };
+            return formatter;
+        }
+
         public void Save(Team team)
         {
             var storedTeam = GetTeamById(team.Id);
@@ -41,8 +49,6 @@ namespace Tsc.DataAccess
             {
                 UpdateTeam(storedTeam.TechnicalId, team);
             }
-
-            
         }
 
         private void UpdateTeam(string technicalId, Team team)
@@ -99,17 +105,67 @@ namespace Tsc.DataAccess
 
         public void Save(Tournament tournament)
         {
-            throw new NotImplementedException();
+            var storedTournamnet = GetTournament(tournament.Id);
+            if (storedTournamnet == null)
+            {
+                InsertTournament(tournament);
+            }
+            else
+            {
+                UpdateTournament(tournament.TechnicalId, tournament);
+            }
+        }
+
+        private void UpdateTournament(string technicalId, Tournament tournament)
+        {
+            var client = GetHttpClient();
+
+            var result = client.PutAsJsonAsync(client.BaseAddress + TournamentsUrlPart + "/" + technicalId, tournament);
+            if (!result.Result.IsSuccessStatusCode)
+            {
+                throw new Exception(result.Result.StatusCode.ToString());
+            }
+        }
+
+        private void InsertTournament(Tournament tournament)
+        {
+            var client = GetHttpClient();
+
+            var result = client.PostAsJsonAsync(client.BaseAddress + TournamentsUrlPart, tournament);
+            if (!result.Result.IsSuccessStatusCode)
+            {
+                throw new Exception(result.Result.StatusCode.ToString());
+            }
         }
 
         public IEnumerable<Tournament> GetAllTournaments()
         {
-            throw new NotImplementedException();
+            var client = GetHttpClient();
+            var result = client.GetAsync(client.BaseAddress + TournamentsUrlPart);
+            if (!result.Result.IsSuccessStatusCode)
+            {
+                throw new Exception(result.Result.StatusCode.ToString());
+            }
+
+            var tournaments = result.Result.Content.ReadAsAsync<List<Tournament>>(new[] { GetFormatter() });
+
+            return tournaments.Result;
         }
 
         public Tournament GetTournament(Guid id)
         {
-            throw new NotImplementedException();
+            var client = GetHttpClient();
+
+            var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
+            var queryresult = client.GetAsync(client.BaseAddress + TournamentsUrlPart + query);
+            if (!queryresult.Result.IsSuccessStatusCode)
+            {
+                throw new Exception(queryresult.Result.StatusCode.ToString());
+            }
+
+            var tournamnets = queryresult.Result.Content.ReadAsAsync<List<Tournament>>(new[] { GetFormatter() });
+
+            return tournamnets.Result.FirstOrDefault();
         }
 
         //public void Save(Person person)
@@ -136,12 +192,7 @@ namespace Tsc.DataAccess
         //    return teams.Result;
         //}
 
-        private static JsonMediaTypeFormatter GetFormatter()
-        {
-            var resolver = new PrivateSetterJsonDefaultContractResolver();
-            var formatter = new JsonMediaTypeFormatter {SerializerSettings = {ContractResolver = resolver}};
-            return formatter;
-        }
+        
 
        
     }

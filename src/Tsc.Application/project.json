@@ -18,6 +18,7 @@
     }
   },
   "dependencies": {
-    "Tsc.Domain": "1.0.0-*"
+    "Tsc.Domain": "1.0.0-*",
+    "Tsc.DataAccess": "1.0.0-*"
   }
 }

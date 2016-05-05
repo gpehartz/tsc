@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Tsc.Domain.InternalServices;
 
 namespace Tsc.Domain
@@ -44,11 +45,23 @@ namespace Tsc.Domain
 
         public DateTime CreationDate { get; private set; }
 
+        /// <summary>
+        /// This property is required for the mongodb-rest interface,
+        /// since _id must be an Objectid.
+        /// https://github.com/tdegrunt/mongodb-rest/issues/11
+        /// </summary>
+        [JsonProperty(PropertyName = "_id")]
+        public string TechnicalId { get; private set; }
+
         public IEnumerable<Team> Participants
         {
             get
             {
                 return _participants.AsReadOnly();
+            }
+            private set
+            {
+                _participants = new List<Team>(value);
             }
         }
 
@@ -57,6 +70,10 @@ namespace Tsc.Domain
             get
             {
                 return _results.AsReadOnly();
+            }
+            private set
+            {
+                _results = new List<FixtureResult>(value);
             }
         }
 
@@ -73,6 +90,10 @@ namespace Tsc.Domain
             get
             {
                 return _rounds.AsReadOnly();
+            }
+            private set
+            {
+                _rounds = new List<Round>(value);
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tsc.Domain;
 
 namespace Tsc.DataAccess.TestConsole
 {
@@ -25,14 +26,16 @@ namespace Tsc.DataAccess.TestConsole
             //var result = dataAccess.GetAllTeams();
 
             //team update
-            var result = dataAccess.GetAllTeams();
-            var team = result.First();
-            dataAccess.Save(team);
+            //var result = dataAccess.GetAllTeams();
+            //var team = result.First();
+            //dataAccess.Save(team);
 
 
             //dataAccess.Save(new Person {Name = "asdf", Age = 37});
 
             //var result = dataAccess.GetAllPersons();
+
+            dataAccess.Save(new Tournament("Kettes bajnokság", new List<Team>()));
 
             Console.ReadLine();
         }
