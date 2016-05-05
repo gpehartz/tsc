@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 
+
 namespace Tsc.Application
 {
     public class Translator : ITranslator
@@ -47,17 +48,28 @@ namespace Tsc.Application
             };
         }
 
-        public ServiceModel.FixtureItem TranslateToService(Domain.FixtureItem fixtureItem)
+        public static ServiceModel.Fixture TranslateToService(Domain.Fixture fixture)
         {
-            return new ServiceModel.FixtureItem
+            return new ServiceModel.Fixture
             {
-                Id = fixtureItem.Id,
-                HomeTeam = fixtureItem.HomeTeam.Name,
-                AwayTeam = fixtureItem.AwayTeam.Name
+                Id = fixture.Id,
+                HomeTeam = fixture.HomeTeam.Name,
+                AwayTeam = fixture.AwayTeam.Name,
+                HasResult = fixture.HasResult,
+                Results = fixture.Results.Select(TranslateToService).ToList()
             };
         }
 
-        public ServiceModel.TournamentResultItem TranslateToService(Domain.TournamentResultItem resultItem)
+        public static ServiceModel.MatchResult TranslateToService(Domain.MatchResult matchResult)
+        {
+            return new ServiceModel.MatchResult
+                   {
+                       HomeGoals = matchResult.HomeGoals,
+                       AwayGoals = matchResult.AwayGoals
+                   };
+        }
+
+        public static ServiceModel.TournamentResultItem TranslateToService(Domain.TournamentResultItem resultItem)
         {
             return new ServiceModel.TournamentResultItem
             {
@@ -81,6 +93,15 @@ namespace Tsc.Application
                 Id = team.Id,
                 Name = team.Name
             };
+        }
+
+        public Domain.MatchResult TranslateToDomain(ServiceModel.MatchResult matchResult)
+        {
+            return new Domain.MatchResult
+                   {
+                       HomeGoals = matchResult.HomeGoals,
+                       AwayGoals = matchResult.AwayGoals
+                   };
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Tsc.Domain.InternalServices
             var round = new Round(1);
             for (var i = 0; i < participants.Count / 2; i++)
             {
-                round.AddFixture(new FixtureItem(participants[i], participants[(participants.Count - 1) - i]));
+                round.AddFixture(new Fixture(participants[i], participants[(participants.Count - 1) - i]));
             }
             result.Add(round);
 
@@ -36,11 +36,11 @@ namespace Tsc.Domain.InternalServices
 
                 var shiftedList = ShiftListItems(listToShift, i);
 
-                round.AddFixture(new FixtureItem(participants[0], shiftedList[(shiftedList.Count) - 1]));
+                round.AddFixture(new Fixture(participants[0], shiftedList[(shiftedList.Count) - 1]));
 
                 for (var j = 1; j < numberofMatchesInOneRound; j++)
                 {
-                    round.AddFixture(new FixtureItem(shiftedList[j-1], shiftedList[(shiftedList.Count) - j - 1]));
+                    round.AddFixture(new Fixture(shiftedList[j-1], shiftedList[(shiftedList.Count) - j - 1]));
                 }
 
                 result.Add(round);

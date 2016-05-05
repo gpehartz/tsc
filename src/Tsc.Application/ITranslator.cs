@@ -11,5 +11,7 @@
         ServiceModel.Tournament TranslateToService(Domain.Tournament tournament);
 
         ServiceModel.Team TranslateToService(Domain.Team team);
+
+        Domain.MatchResult TranslateToDomain(ServiceModel.MatchResult matchResult);
     }
 }

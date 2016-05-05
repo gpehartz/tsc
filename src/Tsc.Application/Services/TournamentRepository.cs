@@ -31,7 +31,17 @@ namespace Tsc.Application.Services
 
         public void Save(Tournament tournament)
         {
-            _tournaments.Add(tournament);
+            if (_tournaments.Any(item => item.Id == tournament.Id))
+            {
+                var localTournament = _tournaments.First(item => item.Id == tournament.Id);
+
+                _tournaments.Remove(localTournament);
+                _tournaments.Add(tournament);
+            }
+            else
+            {
+                _tournaments.Add(tournament);
+            }        
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tsc.Domain.InternalServices;
 
 namespace Tsc.Domain
 {
     public class Tournament
     {
-        private List<Team> _participants;
-        private List<FixtureResult> _results;
+        private readonly List<Team> _participants;
         private List<Round> _rounds;
 
         private IResultTableEnumeratorService _resultTableEnumeratorService;
@@ -24,7 +24,6 @@ namespace Tsc.Domain
 
             _participants = new List<Team>();
             _rounds = new List<Round>();
-            _results = new List<FixtureResult>();
 
             _resultTableEnumeratorService = resultTableEnumeratorService;
             _fixtureCreationService = fixtureCreationService;
@@ -52,19 +51,11 @@ namespace Tsc.Domain
             }
         }
 
-        public IEnumerable<FixtureResult> Results
-        {
-            get
-            {
-                return _results.AsReadOnly();
-            }
-        }
-
         public IEnumerable<TournamentResultItem> Table
         {
             get
             {
-                return _resultTableEnumeratorService.Create(_results, _participants);
+                return _resultTableEnumeratorService.Create(_rounds, _participants);
             }
         }
 
@@ -84,6 +75,12 @@ namespace Tsc.Domain
 
             var rounds = _fixtureCreationService.CreateRounds(enlistedParticipants);
             _rounds.AddRange(rounds);
+        }
+
+        public void SetFixtureResult(Guid fixtureId, IEnumerable<MatchResult> results)
+        {
+            var fixture = _rounds.SelectMany(item => item.Fixtures).First(item => item.Id == fixtureId);
+            fixture.AddResults(results);
         }
     }
 }

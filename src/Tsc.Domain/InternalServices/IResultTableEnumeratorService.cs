@@ -4,6 +4,6 @@ namespace Tsc.Domain.InternalServices
 {
     public interface IResultTableEnumeratorService
     {
-        IEnumerable<TournamentResultItem> Create(IEnumerable<FixtureResult> fixtureResults, IEnumerable<Team> participants);
+        IEnumerable<TournamentResultItem> Create(IEnumerable<Round> rounds, IEnumerable<Team> participants);
     }
 }

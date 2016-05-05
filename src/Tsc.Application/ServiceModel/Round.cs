@@ -6,6 +6,6 @@ namespace Tsc.Application.ServiceModel
     {
         public int Number { get; set; } 
 
-        public List<FixtureItem> Fixtures { get; set; }
+        public List<Fixture> Fixtures { get; set; }
     }
 }

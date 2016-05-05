@@ -12,9 +12,9 @@ namespace Tsc.Application
     // To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
     public class TscApplication : ITscApplication
     {
-        private ITeamRepository _teamRepository;
-        private ITranslator _translator;
-        private ITournamentRepository _tournamentRepository;
+        private readonly ITeamRepository _teamRepository;
+        private readonly ITranslator _translator;
+        private readonly ITournamentRepository _tournamentRepository;
 
         public TscApplication()
         {
@@ -70,6 +70,15 @@ namespace Tsc.Application
         {
             var domainTeams = _teamRepository.GetAllTeams();
             return domainTeams.Select(_translator.TranslateToService).ToList();
+        }
+
+        public void SetFixtureResult(Guid tournamentId, Guid fixtureId, IEnumerable<MatchResult> results)
+        {
+            var tournament = _tournamentRepository.GetTournament(tournamentId);
+
+            tournament.SetFixtureResult(fixtureId, results.Select(item => _translator.TranslateToDomain(item)).ToList());
+
+            _tournamentRepository.Save(tournament);
         }
     }
 }
