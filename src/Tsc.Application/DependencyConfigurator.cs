@@ -10,13 +10,13 @@ namespace Tsc.Application
         internal void Configure(IUnityContainer unityContainer)
         {
             //in-memory repositories
-            //unityContainer.RegisterType<ITeamRepository, TeamRepository>();
-            //unityContainer.RegisterType<ITournamentRepository, TournamentRepository>();
+            unityContainer.RegisterType<ITeamRepository, TeamRepository>();
+            unityContainer.RegisterType<ITournamentRepository, TournamentRepository>();
 
             //persistent repositories
-            unityContainer.RegisterType<ITscDataAccess, MongoRestTscDataAccess>(new InjectionConstructor(@"http://localhost:3000/"));
-            unityContainer.RegisterType<ITeamRepository, PersistentTeamRepository>();
-            unityContainer.RegisterType<ITournamentRepository, PersistentTournamentRepository>();
+            //unityContainer.RegisterType<ITscDataAccess, MongoRestTscDataAccess>(new InjectionConstructor(@"http://localhost:3000/"));
+            //unityContainer.RegisterType<ITeamRepository, PersistentTeamRepository>();
+            //unityContainer.RegisterType<ITournamentRepository, PersistentTournamentRepository>();
 
 
             unityContainer.RegisterType<ITranslator, Translator>();

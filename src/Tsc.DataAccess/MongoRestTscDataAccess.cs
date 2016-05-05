@@ -40,14 +40,14 @@ namespace Tsc.DataAccess
 
         public void Save(Team team)
         {
-            var storedTeam = GetTeamById(team.Id);
-            if (storedTeam == null)
+            var existingId = GetIdMapForTeam(team.Id);
+            if (existingId == null)
             {
                 InsertTeam(team);
             }
             else
             {
-                UpdateTeam(storedTeam.TechnicalId, team);
+                UpdateTeam(existingId.TechnicalId, team);
             }
         }
 
@@ -89,6 +89,22 @@ namespace Tsc.DataAccess
             return teams.Result.FirstOrDefault();
         }
 
+        private IdMap GetIdMapForTeam(Guid id)
+        {
+            var client = GetHttpClient();
+
+            var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
+            var queryresult = client.GetAsync(client.BaseAddress + TeamsUrlPart + query);
+            if (!queryresult.Result.IsSuccessStatusCode)
+            {
+                throw new Exception(queryresult.Result.StatusCode.ToString());
+            }
+
+            var idMaps = queryresult.Result.Content.ReadAsAsync<List<IdMap>>(new[] { GetFormatter() });
+
+            return idMaps.Result.FirstOrDefault();
+        }
+
         public IEnumerable<Team> GetAllTeams()
         {
             var client = GetHttpClient();
@@ -105,21 +121,21 @@ namespace Tsc.DataAccess
 
         public void Save(Tournament tournament)
         {
-            var storedTournamnet = GetTournament(tournament.Id);
-            if (storedTournamnet == null)
+            var existingId = GetIdMapForTournament(tournament.Id);
+            if (existingId == null)
             {
                 InsertTournament(tournament);
             }
             else
             {
-                UpdateTournament(tournament.TechnicalId, tournament);
+                UpdateTournament(existingId.TechnicalId, tournament);
             }
         }
 
         private void UpdateTournament(string technicalId, Tournament tournament)
         {
             var client = GetHttpClient();
-
+            
             var result = client.PutAsJsonAsync(client.BaseAddress + TournamentsUrlPart + "/" + technicalId, tournament);
             if (!result.Result.IsSuccessStatusCode)
             {
@@ -168,32 +184,20 @@ namespace Tsc.DataAccess
             return tournamnets.Result.FirstOrDefault();
         }
 
-        //public void Save(Person person)
-        //{
-        //    var client = GetHttpClient();
-        //    var result = client.PostAsJsonAsync(client.BaseAddress + PersonsUrlPart, person);
-        //    if (!result.Result.IsSuccessStatusCode)
-        //    {
-        //        throw new Exception(result.Result.StatusCode.ToString());
-        //    }
-        //}
+        private IdMap GetIdMapForTournament(Guid id)
+        {
+            var client = GetHttpClient();
 
-        //public IEnumerable<Person> GetAllPersons()
-        //{
-        //    var client = GetHttpClient();
-        //    var result = client.GetAsync(client.BaseAddress + PersonsUrlPart);
-        //    if (!result.Result.IsSuccessStatusCode)
-        //    {
-        //        throw new Exception(result.Result.StatusCode.ToString());
-        //    }
+            var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
+            var queryresult = client.GetAsync(client.BaseAddress + TournamentsUrlPart + query);
+            if (!queryresult.Result.IsSuccessStatusCode)
+            {
+                throw new Exception(queryresult.Result.StatusCode.ToString());
+            }
 
-        //    var teams = result.Result.Content.ReadAsAsync<List<Person>>(new[] { GetFormatter() });
+            var idMaps = queryresult.Result.Content.ReadAsAsync<List<IdMap>>(new[] { GetFormatter() });
 
-        //    return teams.Result;
-        //}
-
-        
-
-       
+            return idMaps.Result.FirstOrDefault();
+        }
     }
 }

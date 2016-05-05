@@ -1,19 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using Tsc.Domain.InternalServices;
 
 namespace Tsc.Domain
 {
     public class Tournament
     {
-        private readonly List<Team> _participants;
-        private List<Round> _rounds;
+        private List<Team> _participants = new List<Team>();
+        private List<Round> _rounds = new List<Round>();
 
         private IResultTableEnumeratorService _resultTableEnumeratorService;
         private IRoundCreationService _fixtureCreationService;
         private IParticipantEnlisterService _participantEnlisterService;
+
+        /// <summary>
+        /// Needed for serialization
+        /// </summary>
+        private Tournament()
+        {
+            _fixtureCreationService = new RoundCreationService();
+            _participantEnlisterService = new ParticipantEnlisterService();
+            _resultTableEnumeratorService = new ResultTableEnumeratorService();
+        }
 
         //For testing
         public Tournament(IRoundCreationService fixtureCreationService, IParticipantEnlisterService participantEnlisterService, IResultTableEnumeratorService resultTableEnumeratorService,
@@ -49,8 +58,8 @@ namespace Tsc.Domain
         /// since _id must be an Objectid.
         /// https://github.com/tdegrunt/mongodb-rest/issues/11
         /// </summary>
-        [JsonProperty(PropertyName = "_id")]
-        public string TechnicalId { get; private set; }
+        //[JsonProperty(PropertyName = "_id")]
+        //public string TechnicalId { get; private set; }
 
         public IEnumerable<Team> Participants
         {

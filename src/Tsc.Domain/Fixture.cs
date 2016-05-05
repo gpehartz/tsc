@@ -6,7 +6,7 @@ namespace Tsc.Domain
 {
     public class Fixture
     {
-        private readonly List<MatchResult> _results; 
+        private List<MatchResult> _results; 
 
         public Guid Id { get; private set; }
 
@@ -22,6 +22,7 @@ namespace Tsc.Domain
         public IEnumerable<MatchResult> Results
         {
             get { return _results.AsReadOnly(); }
+            private set { _results = new List<MatchResult>(value); }
         }
 
         public Fixture(Team homeTeam, Team awayTeam)

@@ -29,14 +29,19 @@ namespace Tsc.DataAccess.TestConsole
             //var result = dataAccess.GetAllTeams();
             //var team = result.First();
             //dataAccess.Save(team);
+            
+            //dataAccess.Save(new Tournament("Kettes bajnokság", new List<Team>()));
+            var result = dataAccess.GetAllTournaments();
+
+            var tournament = result.First();
+            tournament.SetFixtureResult(Guid.Parse("6b390253-1671-4549-88ca-5da10234cb46"), new[]
+            {
+                new MatchResult {HomeGoals = 10, AwayGoals = 0}
+            });
 
 
-            //dataAccess.Save(new Person {Name = "asdf", Age = 37});
-
-            //var result = dataAccess.GetAllPersons();
-
-            dataAccess.Save(new Tournament("Kettes bajnokság", new List<Team>()));
-
+            dataAccess.Save(tournament);
+            
             Console.ReadLine();
         }
     }
