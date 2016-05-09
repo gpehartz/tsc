@@ -1,0 +1,1 @@
+call c:\mongodb-rest\node_modules\.bin\mongodb-rest.cmd
