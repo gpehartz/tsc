@@ -11,11 +11,10 @@ namespace Tsc.DataAccess
 {
     public class MongoRestTscDataAccess : ITscDataAccess, IDisposable
     {
-        //private const string PersonsUrlPart = @"tsc/persons";
         private const string TeamsUrlPart = @"tsc/teams";
         private const string TournamentsUrlPart = @"tsc/tournaments";
         private readonly string _url;
-        private static HttpClient _httpClient;
+        private static readonly Dictionary<string, HttpClient> HttpClientCache = new Dictionary<string, HttpClient>(); 
         private static readonly object HttpClientLock = new object();
 
 
@@ -26,21 +25,22 @@ namespace Tsc.DataAccess
 
         private HttpClient GetHttpClient()
         {
-            if (_httpClient == null)
+            lock (HttpClientLock)
             {
-                lock (HttpClientLock)
+                if (!HttpClientCache.ContainsKey(_url))
                 {
-                    if (_httpClient == null)
+                    if (!HttpClientCache.ContainsKey(_url))
                     {
-                        _httpClient = new HttpClient();
-                        _httpClient.BaseAddress = new Uri(_url);
+                        var httpClient = new HttpClient();
+                        httpClient.BaseAddress = new Uri(_url);
 
-                        _httpClient.DefaultRequestHeaders.Accept.Add(
+                        httpClient.DefaultRequestHeaders.Accept.Add(
                             new MediaTypeWithQualityHeaderValue("application/json"));
+                        HttpClientCache.Add(_url, httpClient);
                     }
                 }
+                return HttpClientCache[_url];
             }
-            return _httpClient;
         }
 
         private static JsonMediaTypeFormatter GetFormatter()
@@ -214,7 +214,10 @@ namespace Tsc.DataAccess
 
         public void Dispose()
         {
-            ((IDisposable) _httpClient).Dispose();
+            foreach (var cacheItem in HttpClientCache)
+            {
+                ((IDisposable)cacheItem.Value).Dispose();
+            }
         }
     }
 }
