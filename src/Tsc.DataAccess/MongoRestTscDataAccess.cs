@@ -9,12 +9,15 @@ using Tsc.Domain;
 
 namespace Tsc.DataAccess
 {
-    public class MongoRestTscDataAccess : ITscDataAccess
+    public class MongoRestTscDataAccess : ITscDataAccess, IDisposable
     {
         //private const string PersonsUrlPart = @"tsc/persons";
         private const string TeamsUrlPart = @"tsc/teams";
         private const string TournamentsUrlPart = @"tsc/tournaments";
         private readonly string _url;
+        private static HttpClient _httpClient;
+        private static readonly object HttpClientLock = new object();
+
 
         public MongoRestTscDataAccess(string url)
         {
@@ -23,12 +26,21 @@ namespace Tsc.DataAccess
 
         private HttpClient GetHttpClient()
         {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(_url);
+            if (_httpClient == null)
+            {
+                lock (HttpClientLock)
+                {
+                    if (_httpClient == null)
+                    {
+                        _httpClient = new HttpClient();
+                        _httpClient.BaseAddress = new Uri(_url);
 
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            return client;
+                        _httpClient.DefaultRequestHeaders.Accept.Add(
+                            new MediaTypeWithQualityHeaderValue("application/json"));
+                    }
+                }
+            }
+            return _httpClient;
         }
 
         private static JsonMediaTypeFormatter GetFormatter()
@@ -198,6 +210,11 @@ namespace Tsc.DataAccess
             var idMaps = queryresult.Result.Content.ReadAsAsync<List<IdMap>>(new[] { GetFormatter() });
 
             return idMaps.Result.FirstOrDefault();
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable) _httpClient).Dispose();
         }
     }
 }
