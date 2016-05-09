@@ -2,6 +2,7 @@
 mongodb-rest használata
 =======================
 
+ - előfeltétele: MongoDB telepítve!
  - NodeJS install : 4.4.3
  - proxy beállítása    npm config set proxy http://proxy-atc.atlanta.hp.com:8080 
    törlés: npm config rm proxy
