@@ -3,6 +3,8 @@ mongodb-rest használata
 =======================
 
  - előfeltétele: MongoDB telepítve!
+   - https://www.mongodb.com/download-center?jmp=nav#community
+   - set up db path: ex.: mongod --dbpath "d:\Program Files\MogoDB\Data"
  - NodeJS install : 4.4.3
  - proxy beállítása    npm config set proxy http://proxy-atc.atlanta.hp.com:8080 
    törlés: npm config rm proxy

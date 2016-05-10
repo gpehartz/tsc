@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.OptionsModel;
 using Tsc.Domain;
+using Tsc.DataAccess;
 
 namespace Tsc.DataAccess.TestConsole
 {
@@ -12,7 +14,8 @@ namespace Tsc.DataAccess.TestConsole
         {
             Console.WriteLine("helló");
 
-            var dataAccess = new Tsc.DataAccess.MongoRestTscDataAccess(@"http://localhost:3000/");
+            var configuration = new MongoRestTscDataAccessConfiguration { MongoDbRestUrl = @"http://localhost:3000/" };
+            var dataAccess = new MongoRestTscDataAccess(configuration);
 
             //team insert
             //dataAccess.Save(new Tsc.Domain.Team("Harapósok", new List<Tsc.Domain.User>

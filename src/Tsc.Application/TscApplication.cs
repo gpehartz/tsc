@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Tsc.Application.ServiceModel;
 using Tsc.Domain.ExternalServices;
-using Unity;
-
 
 namespace Tsc.Application
 {
@@ -16,28 +14,11 @@ namespace Tsc.Application
         private readonly ITranslator _translator;
         private readonly ITournamentRepository _tournamentRepository;
 
-        public TscApplication()
-        {
-            var container = GetDefaultContainer();
-
-            _teamRepository = container.Resolve<ITeamRepository>();
-            _tournamentRepository = container.Resolve<ITournamentRepository>();
-            _translator = container.Resolve<ITranslator>();
-        }
-
         public TscApplication(ITeamRepository teamRepository, ITournamentRepository tournamentRepository, ITranslator translator)
         {
             _teamRepository = teamRepository;
             _tournamentRepository = tournamentRepository;
             _translator = translator;
-        }
-
-        private static IUnityContainer GetDefaultContainer()
-        {
-            var unityContainer = new UnityContainer();
-            var dependencyConfigurator = new DependencyConfigurator();
-            dependencyConfigurator.Configure(unityContainer);
-            return unityContainer;
         }
 
         public void AddTeam(Team team)

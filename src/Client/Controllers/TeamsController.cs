@@ -8,11 +8,11 @@ namespace Client.Controllers
     [Route("api/[controller]")]
     public class TeamsController
     {
-        private TscApplication _application;
+        private readonly ITscApplication _application;
 
-        public TeamsController()
+        public TeamsController(ITscApplication application)
         {
-            _application = new TscApplication();
+            _application = application;
         }
 
         [HttpGet]

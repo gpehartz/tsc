@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using Microsoft.Extensions.OptionsModel;
 using Tsc.Domain;
 
 namespace Tsc.DataAccess
@@ -13,34 +14,17 @@ namespace Tsc.DataAccess
     {
         private const string TeamsUrlPart = @"tsc/teams";
         private const string TournamentsUrlPart = @"tsc/tournaments";
-        private readonly string _url;
-        private static readonly Dictionary<string, HttpClient> HttpClientCache = new Dictionary<string, HttpClient>(); 
-        private static readonly object HttpClientLock = new object();
+        private readonly HttpClient _httpClient;
 
-
-        public MongoRestTscDataAccess(string url)
+        public MongoRestTscDataAccess(IOptions<MongoRestTscDataAccessConfiguration> options)
+            : this(options.Value)
         {
-            _url = url;
         }
 
-        private HttpClient GetHttpClient()
+        internal MongoRestTscDataAccess(MongoRestTscDataAccessConfiguration configuration)
         {
-            lock (HttpClientLock)
-            {
-                if (!HttpClientCache.ContainsKey(_url))
-                {
-                    if (!HttpClientCache.ContainsKey(_url))
-                    {
-                        var httpClient = new HttpClient();
-                        httpClient.BaseAddress = new Uri(_url);
-
-                        httpClient.DefaultRequestHeaders.Accept.Add(
-                            new MediaTypeWithQualityHeaderValue("application/json"));
-                        HttpClientCache.Add(_url, httpClient);
-                    }
-                }
-                return HttpClientCache[_url];
-            }
+            _httpClient = new HttpClient {BaseAddress = new Uri(configuration.MongoDbRestUrl) };
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         private static JsonMediaTypeFormatter GetFormatter()
@@ -65,9 +49,7 @@ namespace Tsc.DataAccess
 
         private void UpdateTeam(string technicalId, Team team)
         {
-            var client = GetHttpClient();
-
-            var result = client.PutAsJsonAsync(client.BaseAddress + TeamsUrlPart + "/"+technicalId, team);
+            var result = _httpClient.PutAsJsonAsync(_httpClient.BaseAddress + TeamsUrlPart + "/" + technicalId, team);
             if (!result.Result.IsSuccessStatusCode)
             {
                 throw new Exception(result.Result.StatusCode.ToString());
@@ -76,9 +58,7 @@ namespace Tsc.DataAccess
 
         private void InsertTeam(Team team)
         {
-            var client = GetHttpClient();
-
-            var result = client.PostAsJsonAsync(client.BaseAddress + TeamsUrlPart, team);
+            var result = _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + TeamsUrlPart, team);
             if (!result.Result.IsSuccessStatusCode)
             {
                 throw new Exception(result.Result.StatusCode.ToString());
@@ -87,47 +67,39 @@ namespace Tsc.DataAccess
 
         public Team GetTeamById(Guid id)
         {
-            var client = GetHttpClient();
-            
             var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
-            var queryresult = client.GetAsync(client.BaseAddress + TeamsUrlPart + query);
+            var queryresult = _httpClient.GetAsync(_httpClient.BaseAddress + TeamsUrlPart + query);
             if (!queryresult.Result.IsSuccessStatusCode)
             {
                 throw new Exception(queryresult.Result.StatusCode.ToString());
             }
 
             var teams = queryresult.Result.Content.ReadAsAsync<List<Team>>(new[] { GetFormatter() });
-
             return teams.Result.FirstOrDefault();
         }
 
         private IdMap GetIdMapForTeam(Guid id)
         {
-            var client = GetHttpClient();
-
             var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
-            var queryresult = client.GetAsync(client.BaseAddress + TeamsUrlPart + query);
+            var queryresult = _httpClient.GetAsync(_httpClient.BaseAddress + TeamsUrlPart + query);
             if (!queryresult.Result.IsSuccessStatusCode)
             {
                 throw new Exception(queryresult.Result.StatusCode.ToString());
             }
 
             var idMaps = queryresult.Result.Content.ReadAsAsync<List<IdMap>>(new[] { GetFormatter() });
-
             return idMaps.Result.FirstOrDefault();
         }
 
         public IEnumerable<Team> GetAllTeams()
         {
-            var client = GetHttpClient();
-            var result = client.GetAsync(client.BaseAddress + TeamsUrlPart);
+            var result = _httpClient.GetAsync(_httpClient.BaseAddress + TeamsUrlPart);
             if (!result.Result.IsSuccessStatusCode)
             {
                 throw new Exception(result.Result.StatusCode.ToString());
             }
 
             var teams = result.Result.Content.ReadAsAsync<List<Team>>(new[] { GetFormatter() });
-
             return teams.Result;
         }
 
@@ -146,9 +118,7 @@ namespace Tsc.DataAccess
 
         private void UpdateTournament(string technicalId, Tournament tournament)
         {
-            var client = GetHttpClient();
-            
-            var result = client.PutAsJsonAsync(client.BaseAddress + TournamentsUrlPart + "/" + technicalId, tournament);
+            var result = _httpClient.PutAsJsonAsync(_httpClient.BaseAddress + TournamentsUrlPart + "/" + technicalId, tournament);
             if (!result.Result.IsSuccessStatusCode)
             {
                 throw new Exception(result.Result.StatusCode.ToString());
@@ -157,9 +127,7 @@ namespace Tsc.DataAccess
 
         private void InsertTournament(Tournament tournament)
         {
-            var client = GetHttpClient();
-
-            var result = client.PostAsJsonAsync(client.BaseAddress + TournamentsUrlPart, tournament);
+            var result = _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + TournamentsUrlPart, tournament);
             if (!result.Result.IsSuccessStatusCode)
             {
                 throw new Exception(result.Result.StatusCode.ToString());
@@ -168,56 +136,45 @@ namespace Tsc.DataAccess
 
         public IEnumerable<Tournament> GetAllTournaments()
         {
-            var client = GetHttpClient();
-            var result = client.GetAsync(client.BaseAddress + TournamentsUrlPart);
+            var result = _httpClient.GetAsync(_httpClient.BaseAddress + TournamentsUrlPart);
             if (!result.Result.IsSuccessStatusCode)
             {
                 throw new Exception(result.Result.StatusCode.ToString());
             }
 
             var tournaments = result.Result.Content.ReadAsAsync<List<Tournament>>(new[] { GetFormatter() });
-
             return tournaments.Result;
         }
 
         public Tournament GetTournament(Guid id)
         {
-            var client = GetHttpClient();
-
             var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
-            var queryresult = client.GetAsync(client.BaseAddress + TournamentsUrlPart + query);
+            var queryresult = _httpClient.GetAsync(_httpClient.BaseAddress + TournamentsUrlPart + query);
             if (!queryresult.Result.IsSuccessStatusCode)
             {
                 throw new Exception(queryresult.Result.StatusCode.ToString());
             }
 
             var tournamnets = queryresult.Result.Content.ReadAsAsync<List<Tournament>>(new[] { GetFormatter() });
-
             return tournamnets.Result.FirstOrDefault();
         }
 
         private IdMap GetIdMapForTournament(Guid id)
         {
-            var client = GetHttpClient();
-
             var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
-            var queryresult = client.GetAsync(client.BaseAddress + TournamentsUrlPart + query);
+            var queryresult = _httpClient.GetAsync(_httpClient.BaseAddress + TournamentsUrlPart + query);
             if (!queryresult.Result.IsSuccessStatusCode)
             {
                 throw new Exception(queryresult.Result.StatusCode.ToString());
             }
 
             var idMaps = queryresult.Result.Content.ReadAsAsync<List<IdMap>>(new[] { GetFormatter() });
-
             return idMaps.Result.FirstOrDefault();
         }
 
         public void Dispose()
         {
-            foreach (var cacheItem in HttpClientCache)
-            {
-                ((IDisposable)cacheItem.Value).Dispose();
-            }
+            _httpClient.Dispose();
         }
     }
 }

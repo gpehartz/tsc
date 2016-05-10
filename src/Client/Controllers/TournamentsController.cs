@@ -9,11 +9,11 @@ namespace Client.Controllers
     [Route("api/[controller]")]
     public class TournamentsController
     {
-        private TscApplication _application;
+        private readonly ITscApplication _application;
 
-        public TournamentsController()
+        public TournamentsController(ITscApplication application)
         {
-            _application = new TscApplication();
+            _application = application;
         }
 
         [HttpGet]
