@@ -1,0 +1,50 @@
+﻿<style>
+    .dragdrop-zone {
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 15px;
+        border-color: lightgray;
+        width: 200px;
+        height: 75px;
+        text-align: center;
+        margin: 10px;
+    }
+
+    dragrdop-info {
+        
+    }
+
+    .progress {
+        margin: 10px;
+    }
+</style>
+
+<div class="column is-4">
+    <div class="dragdrop-zone">
+        <div class="dragrdop-info" [ng-file-drop]="options" (onUpload)="handleDropUpload($event)">
+            <i class="glyphicon glyphicon-open"></i> Drop file here
+        </div>
+        <div class="progress">
+            <div class="progress-bar" [style.width]="progress + '%'"></div>
+            <span class="percent">{{ progress }}%</span>
+        </div>
+    </div>
+</div>
+
+<div class="message-header">Basic Example</div>
+<div class="message-body">
+    <div class="content">
+        <label class="tag btn is-danger">
+            <i class="fa fa-upload icon is-small"></i> Choose file
+            <input type="file" [ng-file-select]="options" (onUpload)="handleBasicUpload($event)">
+        </label>
+        <div class="progress">
+            <div class="progress-bar" [style.width]="basicProgress + '%'"></div>
+            <span class="percent">{{ progress }}%</span>
+        </div>
+    </div>
+</div>
+
+<div>
+    Response:  <p *ngFor="#file of files"> {{ file | json }}
+</div>

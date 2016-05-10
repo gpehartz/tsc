@@ -9,6 +9,8 @@ namespace Tsc.Application
 
         void AddTournament(Tournament tournament);
 
+        void UploadFile(string file);
+
         IEnumerable<Tournament> GetAllTournaments();
 
         IEnumerable<Team> GetAllTeams();
