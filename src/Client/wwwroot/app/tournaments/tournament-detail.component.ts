@@ -3,12 +3,16 @@ import {Component, OnInit, Inject} from 'angular2/core';
 
 import {Tournament} from '../servicemodels/tournament';
 import {ITournamentService, TournamentServiceToken} from '../services/tournament.service';
+import {TournamentTableComponent} from './controls/tournamenttable.component';
+import {TournamentRoundsComponent} from './controls/tournamentrounds.component';
 
 @Component({
-    templateUrl: 'app/tournaments/tournament-detail.view.html'
+    templateUrl: 'app/tournaments/tournament-detail.view.html',
+    directives: [TournamentTableComponent, TournamentRoundsComponent]
 })
 export class TournamentDetailComponent implements OnInit {
     tournament: Tournament;
+    localName: string;
    
     constructor(private _router: Router,
         private _routeParams: RouteParams,
