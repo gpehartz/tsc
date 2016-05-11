@@ -1,180 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
 using Microsoft.Extensions.OptionsModel;
 using Tsc.Domain;
 
 namespace Tsc.DataAccess
 {
-    public class MongoRestTscDataAccess : ITscDataAccess, IDisposable
+    public class MongoRestTscDataAccess : MongoRestTscDataAccessBase, ITscDataAccess
     {
-        private const string TeamsUrlPart = @"tsc/teams";
-        private const string TournamentsUrlPart = @"tsc/tournaments";
-        private readonly HttpClient _httpClient;
+        private static class UrlPart
+        {
+            public const string Teams = @"tsc/teams";
+            public const string Tournaments = @"tsc/tournaments";
+        }
 
         public MongoRestTscDataAccess(IOptions<MongoRestTscDataAccessConfiguration> options)
-            : this(options.Value)
+            : base(options)
         {
         }
 
-        internal MongoRestTscDataAccess(MongoRestTscDataAccessConfiguration configuration)
+        internal MongoRestTscDataAccess(MongoRestTscDataAccessConfiguration configuration) 
+            : base(configuration)
         {
-            _httpClient = new HttpClient {BaseAddress = new Uri(configuration.MongoDbRestUrl) };
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        private static JsonMediaTypeFormatter GetFormatter()
+        #region Team related implementations
+
+        public IEnumerable<Team> GetAllTeams()
         {
-            var resolver = new PrivateSetterJsonDefaultContractResolver();
-            var formatter = new JsonMediaTypeFormatter { SerializerSettings = { ContractResolver = resolver } };
-            return formatter;
+            return GetItems<Team>(UrlPart.Teams);
+        }
+
+        public Team GetTeam(Guid id)
+        {
+            return GetItem<Team>(id, UrlPart.Teams);
         }
 
         public void Save(Team team)
         {
-            var existingId = GetIdMapForTeam(team.Id);
-            if (existingId == null)
-            {
-                InsertTeam(team);
-            }
-            else
-            {
-                UpdateTeam(existingId.TechnicalId, team);
-            }
+            SaveItem(team, UrlPart.Teams);
         }
 
-        private void UpdateTeam(string technicalId, Team team)
-        {
-            var result = _httpClient.PutAsJsonAsync(_httpClient.BaseAddress + TeamsUrlPart + "/" + technicalId, team);
-            if (!result.Result.IsSuccessStatusCode)
-            {
-                throw new Exception(result.Result.StatusCode.ToString());
-            }
-        }
-
-        private void InsertTeam(Team team)
-        {
-            var result = _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + TeamsUrlPart, team);
-            if (!result.Result.IsSuccessStatusCode)
-            {
-                throw new Exception(result.Result.StatusCode.ToString());
-            }
-        }
-
-        public Team GetTeamById(Guid id)
-        {
-            var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
-            var queryresult = _httpClient.GetAsync(_httpClient.BaseAddress + TeamsUrlPart + query);
-            if (!queryresult.Result.IsSuccessStatusCode)
-            {
-                throw new Exception(queryresult.Result.StatusCode.ToString());
-            }
-
-            var teams = queryresult.Result.Content.ReadAsAsync<List<Team>>(new[] { GetFormatter() });
-            return teams.Result.FirstOrDefault();
-        }
-
-        private IdMap GetIdMapForTeam(Guid id)
-        {
-            var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
-            var queryresult = _httpClient.GetAsync(_httpClient.BaseAddress + TeamsUrlPart + query);
-            if (!queryresult.Result.IsSuccessStatusCode)
-            {
-                throw new Exception(queryresult.Result.StatusCode.ToString());
-            }
-
-            var idMaps = queryresult.Result.Content.ReadAsAsync<List<IdMap>>(new[] { GetFormatter() });
-            return idMaps.Result.FirstOrDefault();
-        }
-
-        public IEnumerable<Team> GetAllTeams()
-        {
-            var result = _httpClient.GetAsync(_httpClient.BaseAddress + TeamsUrlPart);
-            if (!result.Result.IsSuccessStatusCode)
-            {
-                throw new Exception(result.Result.StatusCode.ToString());
-            }
-
-            var teams = result.Result.Content.ReadAsAsync<List<Team>>(new[] { GetFormatter() });
-            return teams.Result;
-        }
-
-        public void Save(Tournament tournament)
-        {
-            var existingId = GetIdMapForTournament(tournament.Id);
-            if (existingId == null)
-            {
-                InsertTournament(tournament);
-            }
-            else
-            {
-                UpdateTournament(existingId.TechnicalId, tournament);
-            }
-        }
-
-        private void UpdateTournament(string technicalId, Tournament tournament)
-        {
-            var result = _httpClient.PutAsJsonAsync(_httpClient.BaseAddress + TournamentsUrlPart + "/" + technicalId, tournament);
-            if (!result.Result.IsSuccessStatusCode)
-            {
-                throw new Exception(result.Result.StatusCode.ToString());
-            }
-        }
-
-        private void InsertTournament(Tournament tournament)
-        {
-            var result = _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + TournamentsUrlPart, tournament);
-            if (!result.Result.IsSuccessStatusCode)
-            {
-                throw new Exception(result.Result.StatusCode.ToString());
-            }
-        }
+        #endregion Team related implementations
+        #region Tournament related implementations
 
         public IEnumerable<Tournament> GetAllTournaments()
         {
-            var result = _httpClient.GetAsync(_httpClient.BaseAddress + TournamentsUrlPart);
-            if (!result.Result.IsSuccessStatusCode)
-            {
-                throw new Exception(result.Result.StatusCode.ToString());
-            }
-
-            var tournaments = result.Result.Content.ReadAsAsync<List<Tournament>>(new[] { GetFormatter() });
-            return tournaments.Result;
+            return GetItems<Tournament>(UrlPart.Tournaments);
         }
 
         public Tournament GetTournament(Guid id)
         {
-            var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
-            var queryresult = _httpClient.GetAsync(_httpClient.BaseAddress + TournamentsUrlPart + query);
-            if (!queryresult.Result.IsSuccessStatusCode)
-            {
-                throw new Exception(queryresult.Result.StatusCode.ToString());
-            }
-
-            var tournamnets = queryresult.Result.Content.ReadAsAsync<List<Tournament>>(new[] { GetFormatter() });
-            return tournamnets.Result.FirstOrDefault();
+            return GetItem<Tournament>(id, UrlPart.Tournaments);
         }
 
-        private IdMap GetIdMapForTournament(Guid id)
+        public void Save(Tournament tournament)
         {
-            var query = "?query=" + WebUtility.UrlEncode("{\"Id\":\"" + id + "\"}");
-            var queryresult = _httpClient.GetAsync(_httpClient.BaseAddress + TournamentsUrlPart + query);
-            if (!queryresult.Result.IsSuccessStatusCode)
-            {
-                throw new Exception(queryresult.Result.StatusCode.ToString());
-            }
-
-            var idMaps = queryresult.Result.Content.ReadAsAsync<List<IdMap>>(new[] { GetFormatter() });
-            return idMaps.Result.FirstOrDefault();
+            SaveItem(tournament, UrlPart.Tournaments);
         }
 
-        public void Dispose()
-        {
-            _httpClient.Dispose();
-        }
+        #endregion Tournament related implementations
     }
 }

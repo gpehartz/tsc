@@ -5,14 +5,14 @@ using Tsc.Domain.InternalServices;
 
 namespace Tsc.Domain
 {
-    public class Tournament
+    public class Tournament : IIdentifiable
     {
         private List<Team> _participants = new List<Team>();
         private List<Round> _rounds = new List<Round>();
 
-        private IResultTableEnumeratorService _resultTableEnumeratorService;
-        private IRoundCreationService _fixtureCreationService;
-        private IParticipantEnlisterService _participantEnlisterService;
+        private readonly IResultTableEnumeratorService _resultTableEnumeratorService;
+        private readonly IRoundCreationService _fixtureCreationService;
+        private readonly IParticipantEnlisterService _participantEnlisterService;
 
         /// <summary>
         /// Needed for serialization

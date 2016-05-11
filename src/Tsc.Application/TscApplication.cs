@@ -21,18 +21,23 @@ namespace Tsc.Application
             _translator = translator;
         }
 
-        public void AddTeam(Team team)
+        public IEnumerable<Team> GetAllTeams()
         {
-            var domainTeam = _translator.TranslateToDomainNew(team);
-
-            _teamRepository.Save(domainTeam);
+            var domainTeams = _teamRepository.GetAllTeams();
+            return domainTeams.Select(_translator.TranslateToService).ToList();
         }
 
-        public void AddTournament(Tournament tournament)
+        public Team GetTeam(Guid id)
         {
-            var domainTournament = _translator.TranslateToDomain(tournament);
+            var domainTeam = _teamRepository.GetTeam(id);
+            return _translator.TranslateToService(domainTeam);
+        }
 
-            _tournamentRepository.Save(domainTournament);
+        public Team AddTeam(Team team)
+        {
+            var domainTeam = _translator.TranslateToDomainNew(team);
+            _teamRepository.Save(domainTeam);
+            return _translator.TranslateToService(domainTeam);
         }
 
         public IEnumerable<Tournament> GetAllTournaments()
@@ -47,10 +52,12 @@ namespace Tsc.Application
             return _translator.TranslateToService(domainTournament);
         }
 
-        public IEnumerable<Team> GetAllTeams()
+        public Tournament AddTournament(Tournament tournament)
         {
-            var domainTeams = _teamRepository.GetAllTeams();
-            return domainTeams.Select(_translator.TranslateToService).ToList();
+            var domainTournament = _translator.TranslateToDomain(tournament);
+
+            _tournamentRepository.Save(domainTournament);
+            return _translator.TranslateToService(domainTournament);
         }
 
         public void SetFixtureResult(Guid tournamentId, Guid fixtureId, IEnumerable<MatchResult> results)

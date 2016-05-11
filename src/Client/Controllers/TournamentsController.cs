@@ -7,7 +7,7 @@ using Tsc.Application.ServiceModel;
 namespace Client.Controllers
 {
     [Route("api/[controller]")]
-    public class TournamentsController
+    public class TournamentsController : Controller
     {
         private readonly ITscApplication _application;
 
@@ -22,22 +22,45 @@ namespace Client.Controllers
             return _application.GetAllTournaments();
         }
 
-        [HttpGet("{id}")]
-        public Tournament Get(Guid id)
+        [HttpGet("{id}", Name = "GetTournament")]
+        public IActionResult Get(Guid id)
         {
-            return _application.GetTournament(id);
+            var tournament = _application.GetTournament(id);
+            if (tournament == null)
+            {
+                return HttpNotFound(id);
+            }
+
+            return Ok(tournament);
         }
 
         [HttpPost]
-        public void Post([FromBody]Tournament tournament)
+        public IActionResult Post([FromBody]Tournament tournament)
         {
-            _application.AddTournament(tournament);
+            if (tournament == null)
+            {
+                return HttpBadRequest();
+            }
+
+            var newTournament = _application.AddTournament(tournament);
+            return CreatedAtRoute("GetTournament", new { id = newTournament.Id}, newTournament);
         }
 
         [HttpPut("{tournamentId}/fixtures/{fixtureId}")]
-        public void SetFixtureResult(Guid tournamentId, Guid fixtureId, [FromBody] Fixture fixture)
+        public IActionResult SetFixtureResult(Guid tournamentId, Guid fixtureId, [FromBody] Fixture fixture)
         {
+            // it should handle NotFound cases!
             _application.SetFixtureResult(tournamentId, fixtureId, fixture.Results);
+            return new NoContentResult();
         }
+
+        /*
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            // put delete logic here
+            return new NoContentResult();
+        }
+        */
     }
 }

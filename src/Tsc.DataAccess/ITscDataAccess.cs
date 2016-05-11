@@ -11,5 +11,6 @@ namespace Tsc.DataAccess
         void Save(Tournament tournament);
         IEnumerable<Tournament> GetAllTournaments();
         Tournament GetTournament(Guid id);
+        Team GetTeam(Guid id);
     }
 }
