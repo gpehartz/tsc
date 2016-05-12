@@ -5,9 +5,9 @@ import {FormBuilder, Validators, Control, ControlGroup} from 'angular2/common';
 
 import {ITeamService, TeamServiceToken} from '../services/team.service';
 import {ITournamentService, TournamentServiceToken} from '../services/tournament.service';
-import {TeamWithSelection} from '../models/teamWithSelection';
-import {Team} from '../models/team';
-import {Tournament} from '../models/tournament';
+import {TeamWithSelection} from '../models/teamwithselection';
+import {Team} from '../servicemodels/team';
+import {Tournament} from '../servicemodels/tournament';
 
 
 @Component({
@@ -17,6 +17,7 @@ export class AddTournamentComponent implements OnInit {
     addTournamentForm: ControlGroup;
     tournamentName: string;
     teamsWithSelection: TeamWithSelection[];
+    fileToUpload: File;
 
     constructor(private _router: Router,
         private _fb: FormBuilder,
@@ -50,7 +51,12 @@ export class AddTournamentComponent implements OnInit {
     save() {
         var selectedTeams = this.teamsWithSelection.filter(item => item.isSelected).map(item => item.team);
 
-        this._tournamentService.addTournament(new Tournament(this.tournamentName, selectedTeams)).subscribe(item => this._router.navigate(['TournamentsCenter']));
+        this._tournamentService.addTournament(new Tournament(this.tournamentName, selectedTeams), this.fileToUpload)
+                               .then(item => this._router.navigate(['TournamentsCenter']), item => { });
+    }
+
+    fileChangeEvent(fileInput: any) {
+        this.fileToUpload = <File>fileInput.target.files[0];
     }
 
     static validateTeamSelection(group: ControlGroup) {

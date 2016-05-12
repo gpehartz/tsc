@@ -1,20 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Tsc.Application.ServiceModel;
 
 namespace Tsc.Application
 {
     public interface ITscApplication
     {
-        void AddTeam(Team team);
+        IEnumerable<Team> GetAllTeams();
 
-        void AddTournament(Tournament tournament);
+        Team GetTeam(Guid id);
+
+        Team AddTeam(Team team);
 
         void UploadFile(string file);
 
         IEnumerable<Tournament> GetAllTournaments();
-
-        IEnumerable<Team> GetAllTeams();
-
+        
         IEnumerable<User> GetAllUsers();
+
+        Tournament GetTournament(Guid id);
+
+        Tournament AddTournament(Tournament tournament);
+
+        void SetFixtureResult(Guid tournamentId, Guid fixtureId, IEnumerable<MatchResult> results);
     }
 }

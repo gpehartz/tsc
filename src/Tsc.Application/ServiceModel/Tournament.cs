@@ -12,5 +12,11 @@ namespace Tsc.Application.ServiceModel
         public DateTime CreationDate { get; set; }
 
         public List<Team> Participants { get; set; }
+
+        public List<TournamentResultItem> Table { get; set; }
+
+        public List<Round> Rounds { get; set; }
+
+        public string LogoUrl { get; set; }
     }
 }

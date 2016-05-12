@@ -2,7 +2,7 @@
 import {Http, Headers, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 
-import {Team} from '../models/team';
+import {Team} from '../servicemodels/team';
 
 export interface ITeamService {
     getTeams(): Observable<Response>;

@@ -5,8 +5,8 @@ import {FormBuilder, Validators, Control, ControlGroup} from 'angular2/common';
 import {ITeamService, TeamServiceToken} from '../services/team.service';
 import {IUserService, UserServiceToken} from '../services/user.service';
 import {FileUploaderComponent} from '../common/fileuploader.component';
-import {Team} from '../models/team';
 import {User} from '../models/user';
+import {Team} from '../servicemodels/team';
 
 @Component({
     templateUrl: 'app/teams/add-team.view.html',

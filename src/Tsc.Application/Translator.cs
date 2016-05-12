@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 
+
 namespace Tsc.Application
 {
     public class Translator : ITranslator
@@ -16,25 +17,12 @@ namespace Tsc.Application
 
         public Domain.Team TranslateToDomainNew(ServiceModel.Team team)
         {
-            var domainTeam = new Domain.Team(team.Name);
-            domainTeam.AddUser(team.Users.Select(TranslateToDomain));
-
-            return domainTeam;
+            return new Domain.Team(team.Name, team.Users.Select(TranslateToDomain));
         }
 
         public Domain.Tournament TranslateToDomain(ServiceModel.Tournament tournament)
         {
-            var domainTournament = new Domain.Tournament(tournament.Id, tournament.Name, tournament.CreationDate);
-            domainTournament.AddParticipants(tournament.Participants.Select(TranslateToDomain));
-
-            return domainTournament;
-        }
-
-        public Domain.Tournament TranslateToDomainNew(ServiceModel.Tournament tournament)
-        {
-            var domainTournament = new Domain.Tournament(tournament.Name);
-            domainTournament.AddParticipants(tournament.Participants.Select(TranslateToDomain));
-
+            var domainTournament = new Domain.Tournament(tournament.Name, tournament.Participants.Select(TranslateToDomain), tournament.LogoUrl);
             return domainTournament;
         }
 
@@ -45,7 +33,57 @@ namespace Tsc.Application
                 Id = tournament.Id,
                 Name = tournament.Name,
                 Participants = tournament.Participants.Select(TranslateToService).ToList(),
-                CreationDate = tournament.CreationDate
+                CreationDate = tournament.CreationDate,
+                Rounds = tournament.Rounds.Select(TranslateToService).ToList(),
+                Table = tournament.Table.Select(TranslateToService).ToList(),
+                LogoUrl = tournament.LogoUrl
+            };
+        }
+
+        public ServiceModel.Round TranslateToService(Domain.Round round)
+        {
+            return new ServiceModel.Round
+            {
+                Number = round.Number,
+                Fixtures = round.Fixtures.Select(TranslateToService).ToList()
+            };
+        }
+
+        public static ServiceModel.Fixture TranslateToService(Domain.Fixture fixture)
+        {
+            return new ServiceModel.Fixture
+            {
+                Id = fixture.Id,
+                HomeTeam = fixture.HomeTeam.Name,
+                AwayTeam = fixture.AwayTeam.Name,
+                HasResult = fixture.HasResult,
+                Results = fixture.Results.Select(TranslateToService).ToList()
+            };
+        }
+
+        public static ServiceModel.MatchResult TranslateToService(Domain.MatchResult matchResult)
+        {
+            return new ServiceModel.MatchResult
+                   {
+                       HomeGoals = matchResult.HomeGoals,
+                       AwayGoals = matchResult.AwayGoals
+                   };
+        }
+
+        public static ServiceModel.TournamentResultItem TranslateToService(Domain.TournamentResultItem resultItem)
+        {
+            return new ServiceModel.TournamentResultItem
+            {
+                Position = resultItem.Position,
+                TeamName = resultItem.TeamName,
+                Points = resultItem.Points,
+                Played = resultItem.Played,
+                Won = resultItem.Won,
+                Drawn = resultItem.Drawn,
+                Lost = resultItem.Lost,
+                GoalsFor = resultItem.GoalsFor,
+                GoalsAgainst = resultItem.GoalsAgainst,
+                GoalDifference = resultItem.GoalDifference
             };
         }
 
@@ -68,6 +106,15 @@ namespace Tsc.Application
                 Name = user.Name,
                 CreationDate = user.CreationDate
             };
+        }
+
+        public Domain.MatchResult TranslateToDomain(ServiceModel.MatchResult matchResult)
+        {
+            return new Domain.MatchResult
+                   {
+                       HomeGoals = matchResult.HomeGoals,
+                       AwayGoals = matchResult.AwayGoals
+                   };
         }
     }
 }

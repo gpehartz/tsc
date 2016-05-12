@@ -21,3 +21,5 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("07374d3a-7012-47a2-9162-9293a535a8ec")]
+
+[assembly: InternalsVisibleTo("Tsc.DataAccess.TestConsole")]

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Tsc.Application.ServiceModel;
 using Tsc.Domain.ExternalServices;
-using Unity;
 
 namespace Tsc.Application
 {
@@ -15,18 +15,7 @@ namespace Tsc.Application
         private ITeamRepository _teamRepository;
         private ITournamentRepository _tournamentRepository;
         private IFileRepository _fileRepository;
-
-        public TscApplication()
-        {
-            var container = GetDefaultContainer();
-
-            _userRepository = container.Resolve<IUserRepository>();
-            _teamRepository = container.Resolve<ITeamRepository>();
-            _tournamentRepository = container.Resolve<ITournamentRepository>();
-            _fileRepository = container.Resolve<IFileRepository>();
-            _translator = container.Resolve<ITranslator>();
-        }
-
+        
         public TscApplication(IUserRepository userRepository, ITeamRepository teamRepository, ITournamentRepository tournamentRepository, ITranslator translator)
         {
             _userRepository = userRepository;
@@ -35,31 +24,23 @@ namespace Tsc.Application
             _translator = translator;
         }
 
-        private static IUnityContainer GetDefaultContainer()
+        public IEnumerable<Team> GetAllTeams()
         {
-            var unityContainer = new UnityContainer();
-            var dependencyConfigurator = new DependencyConfigurator();
-            dependencyConfigurator.Configure(unityContainer);
-            return unityContainer;
+            var domainTeams = _teamRepository.GetAllTeams();
+            return domainTeams.Select(_translator.TranslateToService).ToList();
         }
 
-        public void AddTeam(Team team)
+        public Team GetTeam(Guid id)
+        {
+            var domainTeam = _teamRepository.GetTeam(id);
+            return _translator.TranslateToService(domainTeam);
+        }
+
+        public Team AddTeam(Team team)
         {
             var domainTeam = _translator.TranslateToDomainNew(team);
-
             _teamRepository.Save(domainTeam);
-        }
-
-        public void AddTournament(Tournament tournament)
-        {
-            var domainTournament = _translator.TranslateToDomainNew(tournament);
-
-            _tournamentRepository.Save(domainTournament);
-        }
-
-        public void UploadFile(string file)
-        {
-            _fileRepository.Upload(file);
+            return _translator.TranslateToService(domainTeam);
         }
 
         public IEnumerable<Tournament> GetAllTournaments()
@@ -68,10 +49,32 @@ namespace Tsc.Application
             return domainTournaments.Select(_translator.TranslateToService).ToList();
         }
 
-        public IEnumerable<Team> GetAllTeams()
+        public Tournament GetTournament(Guid id)
         {
-            var domainTeams = _teamRepository.GetAllTeams();
-            return domainTeams.Select(_translator.TranslateToService).ToList();
+            var domainTournament = _tournamentRepository.GetTournament(id);
+            return _translator.TranslateToService(domainTournament);
+        }
+
+        public void UploadFile(string file)
+        {
+            _fileRepository.Upload(file);
+        }
+
+        public Tournament AddTournament(Tournament tournament)
+        {
+            var domainTournament = _translator.TranslateToDomain(tournament);
+
+            _tournamentRepository.Save(domainTournament);
+            return _translator.TranslateToService(domainTournament);
+        }
+
+        public void SetFixtureResult(Guid tournamentId, Guid fixtureId, IEnumerable<MatchResult> results)
+        {
+            var tournament = _tournamentRepository.GetTournament(tournamentId);
+
+            tournament.SetFixtureResult(fixtureId, results.Select(item => _translator.TranslateToDomain(item)).ToList());
+
+            _tournamentRepository.Save(tournament);
         }
 
         public IEnumerable<User> GetAllUsers()

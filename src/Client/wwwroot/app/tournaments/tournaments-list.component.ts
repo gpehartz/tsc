@@ -2,10 +2,19 @@
 import {Router} from 'angular2/router';
 
 import {ITournamentService, TournamentServiceToken} from '../services/tournament.service';
-import {Tournament} from '../models/tournament';
+import {Tournament} from '../servicemodels/tournament';
 
 @Component({
-    templateUrl: 'app/tournaments/tournaments-list.view.html'
+    templateUrl: 'app/tournaments/tournaments-list.view.html',
+    styles: [`
+    .logoStyle {
+        border-radius: 32px;
+        height: 64px;
+        width: 64px;
+    }
+    .myTd {
+        vertical-align: middle;
+    }`]
 })
 export class TournamentsListComponent implements OnInit {
     tournaments: Tournament[];
@@ -19,5 +28,9 @@ export class TournamentsListComponent implements OnInit {
 
     ngOnInit() {
         this._tournamentService.getTournaments().subscribe(item => this.tournaments = item.json());
+    }
+
+    onSelect(tournament: Tournament) {
+        this._router.navigate(['TournamentDetail', { id: tournament.id }]);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Tsc.Domain.ExternalServices
 {
@@ -6,5 +7,6 @@ namespace Tsc.Domain.ExternalServices
     {
         void Save(Tournament tournament);
         IEnumerable<Tournament> GetAllTournaments();
+        Tournament GetTournament(Guid id);
     }
 }

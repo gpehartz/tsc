@@ -1,0 +1,29 @@
+﻿<div *ngIf="tournament" class="row">
+    <h2>{{tournament.name}} - részletek</h2>
+
+    <br>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#table" aria-controls="table" role="tab" data-toggle="tab">Tabella</a></li>
+        <li role="presentation"><a href="#rounds" aria-controls="rounds" role="tab" data-toggle="tab">Fordulók</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="table">
+            <br/>
+            <tournament-table [tournament]="tournament"></tournament-table>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="rounds">
+            <br/>
+            <tournament-rounds [tournament]="tournament"></tournament-rounds>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <a class="btn btn-primary" (click)="back()">Vissza</a>
+    <a class="btn btn-primary" (click)="addResult()">Eredmény rögzítése</a>
+</div>
