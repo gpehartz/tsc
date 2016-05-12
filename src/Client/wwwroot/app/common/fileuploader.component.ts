@@ -11,8 +11,12 @@ export class FileUploaderComponent {
     uploadFile: any;
     progress: number = 0;
     options: Object = {
-        url: 'http://localhost:8081/api/file',
-        debug: true
+        url: 'https://api.imgur.com/3/',
+        //url: 'http://localhost:8081/api/file',
+        debug: true,
+        authTokenPrefix: 'Client-ID',
+        authToken: 'cfc1c4d88be16f5',
+        //withCredentials: true
         //url: 'http://ng2-uploader.com:10050/upload'
     };
     files: any[] = [];

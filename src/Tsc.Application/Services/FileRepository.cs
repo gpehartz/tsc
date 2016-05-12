@@ -6,7 +6,7 @@ namespace Tsc.Application.Services
     {
         public void Upload(string file)
         {
-            ;
+
         }
     }
 }
