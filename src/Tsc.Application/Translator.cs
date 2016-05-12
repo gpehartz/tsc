@@ -22,7 +22,7 @@ namespace Tsc.Application
 
         public Domain.Tournament TranslateToDomain(ServiceModel.Tournament tournament)
         {
-            var domainTournament = new Domain.Tournament(tournament.Name, tournament.Participants.Select(TranslateToDomain));
+            var domainTournament = new Domain.Tournament(tournament.Name, tournament.Participants.Select(TranslateToDomain), tournament.LogoUrl);
             return domainTournament;
         }
 
@@ -35,7 +35,8 @@ namespace Tsc.Application
                 Participants = tournament.Participants.Select(TranslateToService).ToList(),
                 CreationDate = tournament.CreationDate,
                 Rounds = tournament.Rounds.Select(TranslateToService).ToList(),
-                Table = tournament.Table.Select(TranslateToService).ToList()
+                Table = tournament.Table.Select(TranslateToService).ToList(),
+                LogoUrl = tournament.LogoUrl
             };
         }
 

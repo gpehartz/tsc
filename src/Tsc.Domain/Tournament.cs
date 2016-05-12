@@ -26,11 +26,12 @@ namespace Tsc.Domain
 
         //For testing
         public Tournament(IRoundCreationService fixtureCreationService, IParticipantEnlisterService participantEnlisterService, IResultTableEnumeratorService resultTableEnumeratorService,
-            Guid id, string name, DateTime creationDate, IEnumerable<Team> participants)
+            Guid id, string name, DateTime creationDate, IEnumerable<Team> participants, string logoUrl)
         {
             Id = id;
             Name = name;
             CreationDate = creationDate;
+            LogoUrl = logoUrl;
 
             _participants = new List<Team>();
             _rounds = new List<Round>();
@@ -42,14 +43,16 @@ namespace Tsc.Domain
             InitializeTournamentData(participants);          
         }
 
-        public Tournament(string name, IEnumerable<Team> participants) : 
-            this(new RoundCreationService(), new ParticipantEnlisterService(), new ResultTableEnumeratorService(), Guid.NewGuid(), name, DateTime.Now, participants)
+        public Tournament(string name, IEnumerable<Team> participants, string logoUrl) : 
+            this(new RoundCreationService(), new ParticipantEnlisterService(), new ResultTableEnumeratorService(), Guid.NewGuid(), name, DateTime.Now, participants, logoUrl)
         {
         }
 
         public Guid Id { get; private set; }
 
         public string Name { get; private set; }
+
+        public string LogoUrl { get; private set; }
 
         public DateTime CreationDate { get; private set; }
 

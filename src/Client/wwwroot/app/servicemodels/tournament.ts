@@ -8,6 +8,7 @@ export class Tournament {
     creationDate: Date;
     table: TournamentResultItem[];
     rounds: Round[];
+    logoUrl: string;
 
     constructor(public name: string, public participants: Team[]) { }
 }

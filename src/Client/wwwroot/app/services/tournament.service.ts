@@ -10,7 +10,7 @@ export interface ITournamentService {
 
     getTournament(id: string): Observable<Response>;
 
-    addTournament(tournament: Tournament): Observable<Response>;
+    addTournament(tournament: Tournament, logo: File): Promise<Response>;
 
     setFixtureResult(tournamentId: string, fixture: Fixture): Observable<Response>;
 }
@@ -30,11 +30,26 @@ export class TournamentService implements ITournamentService {
         return this._http.get('http://localhost:8081/api/tournaments/' + id);
     }
 
-    addTournament(tournament: Tournament) {
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
+    addTournament(tournament: Tournament, logo: File) {
+        return new Promise((resolve, reject) => {
+            var formData: any = new FormData();
+            var xhr = new XMLHttpRequest();
 
-        return this._http.post('http://localhost:8081/api/tournaments/', JSON.stringify(tournament), { headers: headers });
+            formData.append('tournament', JSON.stringify(tournament));
+            formData.append('logo', logo, logo.name);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(JSON.parse(xhr.response));
+                    } else {
+                        reject(xhr.response);
+                    }
+                }
+            }
+            xhr.open('POST', 'http://localhost:8081/api/tournaments/', true);
+            xhr.send(formData);
+        });
     }
 
     setFixtureResult(tournamentId: string, fixture: Fixture) {

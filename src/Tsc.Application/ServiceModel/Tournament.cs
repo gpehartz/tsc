@@ -16,5 +16,7 @@ namespace Tsc.Application.ServiceModel
         public List<TournamentResultItem> Table { get; set; }
 
         public List<Round> Rounds { get; set; }
+
+        public string LogoUrl { get; set; }
     }
 }

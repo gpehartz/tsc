@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc;
+using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Tsc.Application;
 using Tsc.Application.ServiceModel;
 
@@ -35,15 +39,23 @@ namespace Client.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Tournament tournament)
+        public IActionResult Post()
         {
+            var file = Request.Form.Files[0];
+            var fileName = Guid.NewGuid() + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
+            Request.Form.Files[0].SaveAsAsync(Path.Combine(@"c:\Work\tsc\src\Client\wwwroot\images\", fileName));
+
+            var tournament = JsonConvert.DeserializeObject<Tournament>(Request.Form["tournament"]);
+            tournament.LogoUrl = Path.Combine(@"http://localhost:8000/images/", fileName);
+
             if (tournament == null)
             {
                 return HttpBadRequest();
             }
 
             var newTournament = _application.AddTournament(tournament);
-            return CreatedAtRoute("GetTournament", new { id = newTournament.Id}, newTournament);
+            return CreatedAtRoute("GetTournament", new { id = newTournament.Id }, newTournament);
         }
 
         [HttpPut("{tournamentId}/fixtures/{fixtureId}")]
