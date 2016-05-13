@@ -5,6 +5,11 @@ namespace Tsc.Application
 {
     public class Translator : ITranslator
     {
+        public Domain.User TranslateToDomain(ServiceModel.User user)
+        {
+            return new Domain.User(user.Id, user.Name, user.CreationDate);
+        }
+
         public Domain.Team TranslateToDomain(ServiceModel.Team team)
         {
             return new Domain.Team(team.Id, team.Name, team.CreationDate);
@@ -15,14 +20,9 @@ namespace Tsc.Application
             return new Domain.Team(team.Name, team.Users.Select(TranslateToDomain));
         }
 
-        public Domain.User TranslateToDomain(ServiceModel.User user)
-        {
-            return new Domain.User(user.Id, user.Name);
-        }
-
         public Domain.Tournament TranslateToDomain(ServiceModel.Tournament tournament)
         {
-            var domainTournament = new Domain.Tournament(tournament.Name, tournament.Participants.Select(TranslateToDomain));
+            var domainTournament = new Domain.Tournament(tournament.Name, tournament.Participants.Select(TranslateToDomain), tournament.LogoUrl);
             return domainTournament;
         }
 
@@ -35,7 +35,8 @@ namespace Tsc.Application
                 Participants = tournament.Participants.Select(TranslateToService).ToList(),
                 CreationDate = tournament.CreationDate,
                 Rounds = tournament.Rounds.Select(TranslateToService).ToList(),
-                Table = tournament.Table.Select(TranslateToService).ToList()
+                Table = tournament.Table.Select(TranslateToService).ToList(),
+                LogoUrl = tournament.LogoUrl
             };
         }
 
@@ -91,7 +92,19 @@ namespace Tsc.Application
             return new ServiceModel.Team
             {
                 Id = team.Id,
-                Name = team.Name
+                Name = team.Name,
+                Users =  team.Users.Select(TranslateToService).ToList(),
+                CreationDate = team.CreationDate
+            };
+        }
+
+        public ServiceModel.User TranslateToService(Domain.User user)
+        {
+            return new ServiceModel.User
+            {
+                Id = user.Id,
+                Name = user.Name,
+                CreationDate = user.CreationDate
             };
         }
 

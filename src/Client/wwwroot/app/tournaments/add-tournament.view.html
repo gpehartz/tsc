@@ -27,7 +27,7 @@
 
     <div class="form-group">
         <label for="tournamentLogo">Logó</label>
-        <input type="file" id="tournamentLogo">
+        <input type="file" id="inputTournamentLogo" (change)="fileChangeEvent($event)" accept="image/*">
         <p class="help-block">Válassz logót a bajnoksághoz.</p>
     </div>
 

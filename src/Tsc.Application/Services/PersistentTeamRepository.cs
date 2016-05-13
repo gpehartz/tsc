@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Tsc.DataAccess;
 using Tsc.Domain;
@@ -22,6 +23,11 @@ namespace Tsc.Application.Services
         public IEnumerable<Team> GetAllTeams()
         {
             return _dataAccess.GetAllTeams();
+        }
+
+        public Team GetTeam(Guid id)
+        {
+            return _dataAccess.GetTeam(id);
         }
     }
 }

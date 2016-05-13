@@ -33,7 +33,8 @@ var dependencies = [
     paths.npm + 'es6-promise/dist/es6-promise.js',
     paths.npm + 'rxjs/bundles/Rx.js',
     paths.npm + 'bootstrap/dist/js/bootstrap*.js',
-    paths.npm + 'jquery/dist/jquery*.js'
+    paths.npm + 'jquery/dist/jquery*.js',
+    paths.npm + 'ng2-uploader/bundles/ng2-uploader.js'
 ];
 
 var styleSheets = [

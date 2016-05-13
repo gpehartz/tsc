@@ -6,15 +6,21 @@ namespace Tsc.Application
 {
     public interface ITscApplication
     {
-        void AddTeam(Team team);
+        IEnumerable<Team> GetAllTeams();
 
-        void AddTournament(Tournament tournament);
+        Team GetTeam(Guid id);
+
+        Team AddTeam(Team team);
+
+        void UploadFile(string file);
 
         IEnumerable<Tournament> GetAllTournaments();
+        
+        IEnumerable<User> GetAllUsers();
 
         Tournament GetTournament(Guid id);
 
-        IEnumerable<Team> GetAllTeams();
+        Tournament AddTournament(Tournament tournament);
 
         void SetFixtureResult(Guid tournamentId, Guid fixtureId, IEnumerable<MatchResult> results);
     }

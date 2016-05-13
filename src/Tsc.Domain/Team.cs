@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tsc.Domain
 {
-    public class Team
+    public class Team : IIdentifiable
     {
         private List<User> _users;
 

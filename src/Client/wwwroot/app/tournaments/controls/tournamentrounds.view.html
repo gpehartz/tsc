@@ -1,0 +1,21 @@
+﻿<div class="row col-lg-8 col-md-10 col-sm-12">
+    <div *ngFor="#round of tournament.rounds">
+        <h4>{{round.number}}. forduló</h4>
+        <table class="table table-bordered">
+            <tbody>
+                <tr *ngFor="#fixture of round.fixtures">
+                    <td class="col-sm-5">{{fixture.homeTeam}}</td>
+                    <td class="col-sm-5">{{fixture.awayTeam}}</td>
+                    <td>
+                        <table class="table table-bordered">
+                            <tr *ngFor="#result of fixture.results">
+                                <td class="col-sm-6 text-center">{{result.homeGoals}}</td>
+                                <td class="col-sm-6 text-center">{{result.awayGoals}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

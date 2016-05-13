@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Cors;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using Tsc.DataAccess;
 
 namespace Client
 {
@@ -13,9 +13,11 @@ namespace Client
         public Startup(IHostingEnvironment env)
         {
             // Set up configuration sources.
-            var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables();
+            var builder =
+                new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json")
+                    .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true)
+                    .AddEnvironmentVariables();
 
             Configuration = builder.Build();
         }
@@ -26,11 +28,16 @@ namespace Client
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            });
+            services
+                .AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
+
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.Configure<MongoRestTscDataAccessConfiguration>(Configuration.GetSection("MongoRestTscDataAccess"));
+            services.AddApplicationDependencies(true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
