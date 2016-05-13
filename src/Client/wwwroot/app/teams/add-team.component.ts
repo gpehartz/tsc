@@ -9,15 +9,7 @@ import {Team} from '../servicemodels/team';
 
 @Component({
     templateUrl: 'app/teams/add-team.view.html',
-    styles: [`
-    .logoStyle {
-        border-radius: 32px;
-        height: 64px;
-        width: 64px;
-    }
-    .myTd {
-        vertical-align: middle;
-    }`]
+    styleUrls: ['css/common.css']
 })
 export class AddTeamComponent implements OnInit {
     addTeamForm: ControlGroup;

@@ -6,15 +6,7 @@ import {Team} from '../servicemodels/team';
 
 @Component({
     templateUrl: 'app/teams/teams-list.view.html',
-    styles: [`
-    .logoStyle {
-        border-radius: 32px;
-        height: 64px;
-        width: 64px;
-    }
-    .myTd {
-        vertical-align: middle;
-    }`]
+    styleUrls: ['css/common.css']
 })
 export class TeamsListComponent implements OnInit  {
     teams: Team[];

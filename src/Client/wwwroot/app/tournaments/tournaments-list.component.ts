@@ -6,15 +6,7 @@ import {Tournament} from '../servicemodels/tournament';
 
 @Component({
     templateUrl: 'app/tournaments/tournaments-list.view.html',
-    styles: [`
-    .logoStyle {
-        border-radius: 32px;
-        height: 64px;
-        width: 64px;
-    }
-    .myTd {
-        vertical-align: middle;
-    }`]
+    styleUrls: ['css/common.css']
 })
 export class TournamentsListComponent implements OnInit {
     tournaments: Tournament[];
