@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.OptionsModel;
 using Tsc.Domain;
-using Tsc.DataAccess;
 
 namespace Tsc.DataAccess.TestConsole
 {
@@ -12,8 +8,6 @@ namespace Tsc.DataAccess.TestConsole
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("helló");
-
             var configuration = new MongoRestTscDataAccessConfiguration { MongoDbRestUrl = @"http://localhost:3000/" };
             var dataAccess = new MongoRestTscDataAccess(configuration);
 
@@ -45,7 +39,7 @@ namespace Tsc.DataAccess.TestConsole
 
             dataAccess.Save(tournament);
             
-            Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 }

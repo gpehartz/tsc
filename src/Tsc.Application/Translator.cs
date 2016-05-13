@@ -7,7 +7,7 @@ namespace Tsc.Application
     {
         public Domain.User TranslateToDomain(ServiceModel.User user)
         {
-            return new Domain.User(user.Id, user.Name, user.CreationDate);
+            return new Domain.User(user.Id, user.UserName, user.CreationDate);
         }
 
         public Domain.Team TranslateToDomain(ServiceModel.Team team)
@@ -103,7 +103,7 @@ namespace Tsc.Application
             return new ServiceModel.User
             {
                 Id = user.Id,
-                Name = user.Name,
+                UserName = user.UserName,
                 CreationDate = user.CreationDate
             };
         }
