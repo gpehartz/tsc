@@ -10,15 +10,19 @@ namespace Tsc.Application
     // To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
     public class TscApplication : ITscApplication
     {
-        private readonly ITeamRepository _teamRepository;
-        private readonly ITranslator _translator;
-        private readonly ITournamentRepository _tournamentRepository;
-
-        public TscApplication(ITeamRepository teamRepository, ITournamentRepository tournamentRepository, ITranslator translator)
+        private ITranslator _translator;
+        private IUserRepository _userRepository;
+        private ITeamRepository _teamRepository;
+        private ITournamentRepository _tournamentRepository;
+        private IFileRepository _fileRepository;
+        
+        public TscApplication(IUserRepository userRepository, ITeamRepository teamRepository, ITournamentRepository tournamentRepository, IFileRepository fileRepository , ITranslator translator)
         {
+            _userRepository = userRepository;
             _teamRepository = teamRepository;
             _tournamentRepository = tournamentRepository;
             _translator = translator;
+            _fileRepository = fileRepository;
         }
 
         public IEnumerable<Team> GetAllTeams()
@@ -52,6 +56,11 @@ namespace Tsc.Application
             return _translator.TranslateToService(domainTournament);
         }
 
+        public void UploadFile(string file)
+        {
+            _fileRepository.Upload(file);
+        }
+
         public Tournament AddTournament(Tournament tournament)
         {
             var domainTournament = _translator.TranslateToDomain(tournament);
@@ -67,6 +76,12 @@ namespace Tsc.Application
             tournament.SetFixtureResult(fixtureId, results.Select(item => _translator.TranslateToDomain(item)).ToList());
 
             _tournamentRepository.Save(tournament);
+        }
+
+        public IEnumerable<User> GetAllUsers()
+        {
+            var domainUsers = _userRepository.GetAllUsers();
+            return domainUsers.Select(_translator.TranslateToService).ToList();
         }
     }
 }

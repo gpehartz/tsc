@@ -1,23 +1,82 @@
 ﻿<h2>Új csapat létrehozása</h2>
 
 <form [ngFormModel]="addTeamForm">
-    <div class="form-group has-feedback">
-        
+    <div class="form-group has-feedback"
+         [ngClass]="{
+                     'has-success': !addTeamForm.pristine && addTeamForm.controls['inputTeamName'].valid,
+                     'has-error': !addTeamForm.pristine && !addTeamForm.controls['inputTeamName'].valid
+                    }">
+
         <label for="inputTeamName">Név</label>
 
         <input type="text" id="inputTeamName" ngControl="inputTeamName" #inputTeamName="ngForm" class="form-control" [(ngModel)]="teamName"
                placeholder="Csapat neve" />
+
+        <span *ngIf="!addTeamForm.pristine" class="glyphicon form-control-feedback"
+              [ngClass]="{
+                          'glyphicon-ok': inputTeamName.valid,
+                          'glyphicon-remove': !inputTeamName.valid
+                         }"
+              aria-hidden="true">
+        </span>
+
+        <div *ngIf="!addTeamForm.pristine && inputTeamName.errors">
+            <div *ngIf="inputTeamName.errors.required" class="alert alert-danger">A csapat neve kötelező!</div>
+        </div>
     </div>
 
-    <div class="form-group">
+    <!--<div class="form-group">
+        <label for="teamLogo">Logó</label>
+        <p class="help-block">Válassz logót a bajnoksághoz.</p>
+        <fileuploader></fileuploader>
+    </div>-->
+
+    <!--<div class="form-group">
         <label for="teamLogo">Logó</label>
         <input type="file" id="teamLogo">
         <p class="help-block">Válassz logót a bajnoksághoz.</p>
+    </div>-->
+
+    <div class="form-group dropdown">
+        <p class="help-block">Válaszd ki a csapat tagjait.</p>
+
+        <div>
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Adj hozzá csapattagot
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li *ngFor="#user of users"><a href="javascript:void(0)" (click)="onAddUserToTeam(user)">{{user.name}}</a></li>
+            </ul>
+        </div>
     </div>
 
+    <div class="form-group has-feedback">
+        <p class="help-block">A csapat tagjai:</p>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Csapattag neve</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="#selectedUser of selectedUsers">
+                <td>{{selectedUser.name}}</td>
+                <td class="text-center">
+                    <button class="btn btn-default btn-sm" (click)="onRemoveUserFromTeam(selectedUser)"><i class="glyphicon glyphicon-trash"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="!isInitialize">
+            <div *ngIf="selectedUsers.length < 1" class="alert alert-danger">Legalább egy csapattag választása kötelező!</div>
+        </div>
+    </div>
 </form>
 
 <div>
     <a class="btn btn-primary" (click)="cancel()">Mégse</a>
-    <a class="btn btn-primary" (click)="save()">Mentés</a>
+    <a class="btn btn-primary" [ngClass]="{'disabled': !addTeamForm.valid || selectedUsers.length < 1 }" (click)="save()">Mentés</a>
 </div>

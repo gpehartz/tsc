@@ -12,7 +12,11 @@ namespace Tsc.Application
 
         Team AddTeam(Team team);
 
+        void UploadFile(string file);
+
         IEnumerable<Tournament> GetAllTournaments();
+        
+        IEnumerable<User> GetAllUsers();
 
         Tournament GetTournament(Guid id);
 

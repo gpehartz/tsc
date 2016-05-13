@@ -12,9 +12,9 @@ namespace Tsc.Application.Services
         private static readonly List<Tournament> _tournaments =
             new List<Tournament>
             {
-                new Tournament("Egyes bajnokság", new List<Team>()),
-                new Tournament("Valami más bajnokság", new List<Team>()),
-                new Tournament("Ez meg egy harmadik bajnokság", new List<Team>())
+                new Tournament("Egyes bajnokság", new List<Team>(), ""),
+                new Tournament("Valami más bajnokság", new List<Team>(), ""),
+                new Tournament("Ez meg egy harmadik bajnokság", new List<Team>(), "")
             };
 
         public IEnumerable<Tournament> GetAllTournaments()
