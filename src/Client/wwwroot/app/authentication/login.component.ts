@@ -1,25 +1,26 @@
 ﻿import {Component} from "angular2/core";
 import {ROUTER_DIRECTIVES, Router} from "angular2/router";
 import {Location} from "angular2/router";
-import {MockAuthenticationService} from '../services/mockauthentication.service';
+import {AuthenticationService} from '../services/mockauthentication.service';
 
 @Component({
     selector: 'login',
     directives: [ROUTER_DIRECTIVES],
-    providers: [MockAuthenticationService],
+    providers: [AuthenticationService],
     pipes: [],
     templateUrl: 'app/authentication/login.view.html'
 })
 
 export class Login {
-    constructor(private location: Location, private router: Router, private authService: MockAuthenticationService) {
+    constructor(private location: Location, private router: Router, private authService: AuthenticationService) {
     }
     public loginEmail: string;
     public loginPassword: string;
     public errorMessage: string;
     
     onLoginClick() {
-        var isAuthenticated = this.authService.doLogin(this.loginEmail, this.loginPassword);
+        var isAuthenticated = this.authService.doLogin(this.loginEmail, this.loginPassword).subscribe(res => this.router.navigate(['LoggedoutPage']));
+
         if (!isAuthenticated) {
             this.errorMessage = "Hát ez a jelszó itten fos!"
         } else {

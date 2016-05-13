@@ -4,13 +4,13 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {TeamsComponent} from './teams/teams.component';
 import {TournamentsComponent} from './tournaments/tournaments.component';
 import {Login} from './authentication/login.component';
-import {MockAuthenticationService} from './services/mockauthentication.service';
+import {AuthenticationService} from './services/mockauthentication.service';
 
 @Component({
     selector: 'main-app',
     templateUrl: 'app/app.view.html',
     directives: [ROUTER_DIRECTIVES],
-    providers: [MockAuthenticationService]
+    providers: [AuthenticationService]
 })
 @RouteConfig([
     {
@@ -30,11 +30,13 @@ import {MockAuthenticationService} from './services/mockauthentication.service';
     }
 ])
 export class AppComponent {
-    constructor(private authService: MockAuthenticationService) {
+    constructor(private authService: AuthenticationService) {
     }
+
     get authenticated() {
         return this.authService.isAuthenticated();
     }
+
     get username() {
         return this.authService.getUserName();
     }

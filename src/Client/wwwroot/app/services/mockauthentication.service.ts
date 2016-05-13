@@ -1,8 +1,11 @@
 ﻿import {Injectable, EventEmitter, Output} from "angular2/core";
-import {Http, Headers} from 'angular2/http'
+import {Http} from 'angular2/http'
+import 'rxjs/add/operator/map'
 import {Login} from '../servicemodels/login';
 
-export class MockAuthenticationService {
+@Injectable()
+export class AuthenticationService {
+    private _url = "http://localhost:8081/api/account";
     private oAuthCallbackUrl: string;
     private oAuthTokenUrl: string;
     private oAuthUserUrl: string;
@@ -17,19 +20,17 @@ export class MockAuthenticationService {
     private loopCount = 600;
     private intervalLength = 100;
 
-   constructor(private _http: Http) { }
-
-    @Output() change = new EventEmitter();  // @TODO: switch to RxJS Subject instead of EventEmitter
-    private subscription;
+   constructor(private _http: Http) {
+       
+   }
 
     public doLogin(emailAddress:string, password:string)  {
 
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        var login = new Login(emailAddress, password)
+        var login = new Login(emailAddress, password);
 
-        return this._http.post('http://localhost:8081/api/teams/', JSON.stringify(login), { headers: headers });
-        
+        return this._http
+            .post(this._url + '/login', JSON.stringify(login))
+            .map(res => res.json());
     }
 
     public doLogout() {
@@ -39,17 +40,17 @@ export class MockAuthenticationService {
     public isAuthenticated() {
         return this.authenticated;
     }
-    public subscribe(onNext: (value: any) => void, onThrow?: (exception: any) => void, onReturn?: () => void) {
-        return this.change.subscribe(onNext, onThrow, onReturn);
+
+    public doRegister(emailAddress: string, password: string) {
+
+        var login = new Login(emailAddress, password);
+
+        return this._http
+            .post(this._url + '/register', JSON.stringify(login))
+            .map(res => res.json());
     }
 
     public getUserName() {
-        return "SanyikaLOL99000";
+        return "Trolika Bogyika";
     }
-
-    private emitAuthStatus(success: boolean) {
-        this.change.emit({ success: success, authenticated: this.authenticated, token: this.token, expires: this.expires });
-    }
-        
-
 }
