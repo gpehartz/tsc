@@ -5,7 +5,16 @@ import {ITeamService, TeamServiceToken} from '../services/team.service';
 import {Team} from '../servicemodels/team';
 
 @Component({
-    templateUrl: 'app/teams/teams-list.view.html'
+    templateUrl: 'app/teams/teams-list.view.html',
+    styles: [`
+    .logoStyle {
+        border-radius: 32px;
+        height: 64px;
+        width: 64px;
+    }
+    .myTd {
+        vertical-align: middle;
+    }`]
 })
 export class TeamsListComponent implements OnInit  {
     teams: Team[];

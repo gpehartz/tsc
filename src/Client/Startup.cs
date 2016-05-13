@@ -37,7 +37,7 @@ namespace Client
 
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.Configure<MongoRestTscDataAccessConfiguration>(Configuration.GetSection("MongoRestTscDataAccess"));
-            services.AddApplicationDependencies(true);
+            services.AddApplicationDependencies(false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
