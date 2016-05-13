@@ -2,7 +2,7 @@
 import {Http, Headers, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 
-import {User} from '../models/user';
+import {User} from '../servicemodels/user';
 
 export interface IUserService {
     getUsers(): Observable<Response>;

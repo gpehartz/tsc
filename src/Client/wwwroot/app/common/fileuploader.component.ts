@@ -11,12 +11,11 @@ export class FileUploaderComponent {
     uploadFile: any;
     progress: number = 0;
     options: Object = {
-        url: 'https://api.imgur.com/3/',
+        url: 'https://api.imgur.com/3/image',
         //url: 'http://localhost:8081/api/file',
         debug: true,
         authTokenPrefix: 'Client-ID',
         authToken: 'cfc1c4d88be16f5',
-        //withCredentials: true
         //url: 'http://ng2-uploader.com:10050/upload'
     };
     files: any[] = [];
@@ -27,7 +26,6 @@ export class FileUploaderComponent {
     }
 
     handleBasicUpload(data): void {
-        //this.files[0] = data;
         this.zone.run(() => {
             this.progress = data.progress.percent;
         });
@@ -39,7 +37,6 @@ export class FileUploaderComponent {
             this.files.push(data);
         }
         else {
-            //this.files[index] = data;
             this.zone.run(() => {
                 this.files[index] = data;
             });
@@ -60,7 +57,6 @@ export class FileUploaderComponent {
             this.files.push(data);
         }
         else {
-            //this.files[index] = data;
             this.zone.run(() => {
                 this.files[index] = data;
             });

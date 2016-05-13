@@ -1,20 +1,17 @@
 ﻿using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
-using System.Collections.Generic;
-using Microsoft.Net.Http;
 using Tsc.Application;
-using Microsoft.Net.Http.Server;
 
 namespace Client.Controllers
 {
     [Route("api/[controller]")]
     public class FileController : Controller
     {
-        private TscApplication _application;
+        private ITscApplication _application;
 
-        public FileController()
+        public FileController(ITscApplication application)
         {
-            _application = new TscApplication();
+            _application = application;
         }
         
         [HttpPost]

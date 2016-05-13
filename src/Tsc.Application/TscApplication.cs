@@ -16,12 +16,13 @@ namespace Tsc.Application
         private ITournamentRepository _tournamentRepository;
         private IFileRepository _fileRepository;
         
-        public TscApplication(IUserRepository userRepository, ITeamRepository teamRepository, ITournamentRepository tournamentRepository, ITranslator translator)
+        public TscApplication(IUserRepository userRepository, ITeamRepository teamRepository, ITournamentRepository tournamentRepository, IFileRepository fileRepository , ITranslator translator)
         {
             _userRepository = userRepository;
             _teamRepository = teamRepository;
             _tournamentRepository = tournamentRepository;
             _translator = translator;
+            _fileRepository = fileRepository;
         }
 
         public IEnumerable<Team> GetAllTeams()

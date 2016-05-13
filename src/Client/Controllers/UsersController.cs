@@ -8,11 +8,11 @@ namespace Client.Controllers
     [Route("api/[controller]")]
     public class UsersController
     {
-        private TscApplication _application;
+        private ITscApplication _application;
 
-        public UsersController()
+        public UsersController(ITscApplication application)
         {
-            _application = new TscApplication();
+            _application = application;
         }
 
         [HttpGet]

@@ -5,7 +5,7 @@ import {FormBuilder, Validators, Control, ControlGroup} from 'angular2/common';
 import {ITeamService, TeamServiceToken} from '../services/team.service';
 import {IUserService, UserServiceToken} from '../services/user.service';
 import {FileUploaderComponent} from '../common/fileuploader.component';
-import {User} from '../models/user';
+import {User} from '../servicemodels/user';
 import {Team} from '../servicemodels/team';
 
 @Component({
