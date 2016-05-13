@@ -12,7 +12,11 @@
     <tbody>
         <tr *ngFor="#team of teams">
             <td>{{team.name}}</td>
-            <td></td>
+            <td class="text-center myTd">
+                <div *ngIf="team.logoUrl">
+                    <img class="logoStyle" src="{{team.logoUrl}}" />
+                </div>
+            </td>
             <td>{{team.creationDate}}</td>
             <td class="text-center">
                 <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i></button>

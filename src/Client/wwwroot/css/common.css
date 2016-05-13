@@ -1,0 +1,9 @@
+﻿.logoStyle {
+    border-radius: 32px;
+    height: 64px;
+    width: 64px;
+}
+
+.myTd {
+    vertical-align: middle;
+}

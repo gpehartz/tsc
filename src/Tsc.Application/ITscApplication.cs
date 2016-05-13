@@ -11,9 +11,7 @@ namespace Tsc.Application
         Team GetTeam(Guid id);
 
         Team AddTeam(Team team);
-
-        void UploadFile(string file);
-
+        
         IEnumerable<Tournament> GetAllTournaments();
         
         IEnumerable<User> GetAllUsers();

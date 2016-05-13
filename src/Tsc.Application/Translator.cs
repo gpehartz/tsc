@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 
-
 namespace Tsc.Application
 {
     public class Translator : ITranslator
@@ -17,7 +16,7 @@ namespace Tsc.Application
 
         public Domain.Team TranslateToDomainNew(ServiceModel.Team team)
         {
-            return new Domain.Team(team.Name, team.Users.Select(TranslateToDomain));
+            return new Domain.Team(team.Name, team.Users.Select(TranslateToDomain), team.LogoUrl);
         }
 
         public Domain.Tournament TranslateToDomain(ServiceModel.Tournament tournament)
@@ -94,7 +93,8 @@ namespace Tsc.Application
                 Id = team.Id,
                 Name = team.Name,
                 Users =  team.Users.Select(TranslateToService).ToList(),
-                CreationDate = team.CreationDate
+                CreationDate = team.CreationDate,
+                LogoUrl = team.LogoUrl
             };
         }
 

@@ -4,13 +4,12 @@ import {FormBuilder, Validators, Control, ControlGroup} from 'angular2/common';
 
 import {ITeamService, TeamServiceToken} from '../services/team.service';
 import {IUserService, UserServiceToken} from '../services/user.service';
-import {FileUploaderComponent} from '../common/fileuploader.component';
 import {User} from '../servicemodels/user';
 import {Team} from '../servicemodels/team';
 
 @Component({
     templateUrl: 'app/teams/add-team.view.html',
-    directives: [FileUploaderComponent]
+    styleUrls: ['css/common.css']
 })
 export class AddTeamComponent implements OnInit {
     addTeamForm: ControlGroup;
@@ -18,6 +17,8 @@ export class AddTeamComponent implements OnInit {
     users: User[];
     selectedUsers: User[];
     isInitialize: boolean;
+    logoUrl: string;
+    logoReposense: string;
 
     constructor(private _router: Router,
         private _fb: FormBuilder,
@@ -46,7 +47,7 @@ export class AddTeamComponent implements OnInit {
 
     save() {
         this._teamService
-            .addTeam(new Team(this.teamName, new Array<Team>()))
+            .addTeam(new Team(this.teamName, new Array<Team>(), this.logoUrl))
             .subscribe(item => this._router.navigate(['TeamsCenter']));
     }
 
@@ -69,5 +70,29 @@ export class AddTeamComponent implements OnInit {
     upload($event) {
         console.log($event);
     }
+    
+    fileChangeEvent(fileInput: any) {
 
+        var fileToUpload = fileInput.target.files[0];
+
+        var formData = new FormData();
+        formData.append("image", fileToUpload); 
+
+        var xhr = new XMLHttpRequest(); 
+        xhr.open("POST", "https://api.imgur.com/3/image");
+
+        xhr.onload = () => {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    this.logoUrl = JSON.parse(xhr.responseText).data.link;
+                } else {
+                    this.logoReposense = xhr.responseText;
+                }
+            }
+        }
+
+        xhr.setRequestHeader('Authorization', 'Client-ID cfc1c4d88be16f5'); 
+        
+        xhr.send(formData);
+    }
 }
