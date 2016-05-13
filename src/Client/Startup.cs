@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using System;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Tsc.DataAccess;
+using Tsc.Application.ServiceModel;
 
 namespace Client
 {
@@ -17,6 +20,7 @@ namespace Client
                 new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json")
                     .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true)
+                    .AddJsonFile("config.user.json", optional: true)
                     .AddEnvironmentVariables();
 
             Configuration = builder.Build();
@@ -37,7 +41,11 @@ namespace Client
 
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.Configure<MongoRestTscDataAccessConfiguration>(Configuration.GetSection("MongoRestTscDataAccess"));
-            services.AddApplicationDependencies(true);
+            services.AddApplicationDependencies(Convert.ToBoolean(Configuration["ApplicationDependencies:UsePersistenRepos"]));
+
+            services.AddIdentity<User, Role>();
+            services.AddTransient<IUserStore<User>, Tsc.Application.Services.UserStore<User>>();
+            services.AddTransient<IRoleStore<Role>, Tsc.Application.Services.RoleStore<Role>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +53,13 @@ namespace Client
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseIdentity();
 
             app.UseIISPlatformHandler();
             app.UseDefaultFiles();

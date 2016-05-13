@@ -17,7 +17,7 @@ namespace Tsc.Application
 
         public Domain.User TranslateToDomain(ServiceModel.User user)
         {
-            return new Domain.User(user.Id, user.Name);
+            return new Domain.User(user.Id, user.UserName);
         }
 
         public Domain.Tournament TranslateToDomain(ServiceModel.Tournament tournament)

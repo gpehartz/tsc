@@ -1,23 +1,26 @@
 {
-  "version": "1.0.0-*",
-  "description": "Tsc.DataAccess Class Library",
-  "authors": [ "pg" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
-  "frameworks": {
-    "dotnet5.4": {
-      "dependencies": {
+    "version": "1.0.0-*",
+    "description": "Tsc.DataAccess Class Library",
+    "authors": [ "pg" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+
+    "frameworks": {
+        "dnx451": { },
+        "dotnet5.4": {
+            "dependencies": {
+            }
+        }
+    },
+
+    "dependencies": {
         "Microsoft.CSharp": "4.0.1-beta-23516",
         "System.Collections": "4.0.11-beta-23516",
         "System.Linq": "4.0.1-beta-23516",
         "Microsoft.AspNet.WebApi.Client": "5.2.3",
         "System.Net.Http": "4.0.0",
-        "System.Runtime.Serialization.Xml":  "4.1.0"
-      }
-    }
-  },
-    "dependencies": {
+        "System.Runtime.Serialization.Xml": "4.1.0",
         "Microsoft.Extensions.OptionsModel": "1.0.0-rc1-final",
         "Tsc.Domain": "1.0.0-*"
     }
