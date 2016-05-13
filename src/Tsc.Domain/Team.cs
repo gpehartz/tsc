@@ -12,7 +12,9 @@ namespace Tsc.Domain
         public string Name { get; private set; }
 
         public DateTime CreationDate { get; private set; }
-        
+
+        public string LogoUrl { get; private set; }
+
         public IEnumerable<User> Users
         {
             get
@@ -44,13 +46,15 @@ namespace Tsc.Domain
         /// </summary>
         /// <param name="name"></param>
         /// <param name="users"></param>
-        public Team(string name, IEnumerable<User> users)
+        /// <param name="logoUrl"></param>
+        public Team(string name, IEnumerable<User> users, string logoUrl)
             :this()
         {
             Name = name;
 
             Id = Guid.NewGuid();
             CreationDate = DateTime.Now;
+            LogoUrl = logoUrl;
 
             _users.AddRange(users);
         }
@@ -60,6 +64,6 @@ namespace Tsc.Domain
             _users = new List<User>();
         }
 
-        public static readonly Team DummyTeam = new Team("N/A", new List<User>());
+        public static readonly Team DummyTeam = new Team("N/A", new List<User>(), string.Empty);
     }
 }

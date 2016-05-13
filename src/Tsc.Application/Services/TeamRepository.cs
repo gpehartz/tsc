@@ -12,14 +12,14 @@ namespace Tsc.Application.Services
         private static readonly List<Team> _teams =
             new List<Team>
             {
-                new Team("Kis János csapat", new List<User>()),
-                new Team("Matek-tenger kalózai", new List<User>()),
-                new Team("Nyerünk az fix", new List<User>()),
-                new Team("Szappanbuborékok", new List<User>()),
-                new Team("Csacsicsapat", new List<User>()),
-                new Team("Reményteli esetek", new List<User>()),
-                new Team("Hullámreccsentők", new List<User>()),
-                new Team("Fakanálforgatók", new List<User>())
+                new Team("Kis János csapat", new List<User>(), string.Empty),
+                new Team("Matek-tenger kalózai", new List<User>(), string.Empty),
+                new Team("Nyerünk az fix", new List<User>(), string.Empty),
+                new Team("Szappanbuborékok", new List<User>(), string.Empty),
+                new Team("Csacsicsapat", new List<User>(), string.Empty),
+                new Team("Reményteli esetek", new List<User>(), string.Empty),
+                new Team("Hullámreccsentők", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty)
             };
 
         public void Save(Team team)

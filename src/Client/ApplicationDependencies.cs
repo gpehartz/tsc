@@ -28,7 +28,6 @@ namespace Client
                 serviceCollection.TryAdd(ServiceDescriptor.Transient<ITeamRepository, TeamRepository>());
                 serviceCollection.TryAdd(ServiceDescriptor.Transient<ITournamentRepository, TournamentRepository>());
                 serviceCollection.TryAdd(ServiceDescriptor.Transient<IUserRepository, UserRepository>());
-                serviceCollection.TryAdd(ServiceDescriptor.Transient<IFileRepository, FileRepository>());
             }
 
             serviceCollection.TryAdd(ServiceDescriptor.Transient<ITranslator, Translator>());

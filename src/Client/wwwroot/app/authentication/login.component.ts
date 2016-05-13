@@ -14,22 +14,26 @@ import {MockAuthenticationService} from '../services/mockauthentication.service'
 export class Login {
     constructor(private location: Location, private router: Router, private authService: MockAuthenticationService) {
     }
+    public loginEmail: string;
+    public loginPassword: string;
+    public errorMessage: string;
+    
+    onLoginClick() {
+        var isAuthenticated = this.authService.doLogin(this.loginEmail, this.loginPassword);
+        if (!isAuthenticated) {
+            this.errorMessage = "Hát ez a jelszó itten fos!"
+        } else {
+            //TODO:GO to my page
+        }
+    }
 
     get authenticated() {
         return this.authService.isAuthenticated();
     }
 
-    //doLogin() {
-    //    this.authService.doLogin();
-    //}
-
-    //doLogout() {
-    //    this.authService.doLogout();
-    //}
-
-    //get userName() {
-    //    return this.authService.getUserName();
-    //}
+    get userName() {
+        return this.authService.getUserName();
+    }
 
     get page() {
         return this.location.path().split('/')[1];

@@ -14,15 +14,13 @@ namespace Tsc.Application
         private IUserRepository _userRepository;
         private ITeamRepository _teamRepository;
         private ITournamentRepository _tournamentRepository;
-        private IFileRepository _fileRepository;
         
-        public TscApplication(IUserRepository userRepository, ITeamRepository teamRepository, ITournamentRepository tournamentRepository, IFileRepository fileRepository , ITranslator translator)
+        public TscApplication(IUserRepository userRepository, ITeamRepository teamRepository, ITournamentRepository tournamentRepository, ITranslator translator)
         {
             _userRepository = userRepository;
             _teamRepository = teamRepository;
             _tournamentRepository = tournamentRepository;
             _translator = translator;
-            _fileRepository = fileRepository;
         }
 
         public IEnumerable<Team> GetAllTeams()
@@ -54,11 +52,6 @@ namespace Tsc.Application
         {
             var domainTournament = _tournamentRepository.GetTournament(id);
             return _translator.TranslateToService(domainTournament);
-        }
-
-        public void UploadFile(string file)
-        {
-            _fileRepository.Upload(file);
         }
 
         public Tournament AddTournament(Tournament tournament)
