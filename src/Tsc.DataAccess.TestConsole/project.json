@@ -1,34 +1,31 @@
 {
-    "version": "1.0.0-*",
-    "description": "Tsc.DataAccess.TestConsole Console Application",
-    "authors": [ "alajtos" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.0-*",
+  "description": "Tsc.DataAccess.TestConsole Console Application",
+  "authors": [ "alajtos" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
 
-    "compilationOptions": {
-        "emitEntryPoint": true
-    },
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
 
-    "dependencies": {
-        "Microsoft.CSharp": "4.0.1-beta-23516",
-        "System.Collections": "4.0.11-beta-23516",
-        "System.Console": "4.0.0-beta-23516",
-        "System.Linq": "4.0.1-beta-23516",
-        "System.Threading": "4.0.11-beta-23516",
-        "Tsc.DataAccess": "1.0.0-*",
-        "Tsc.Domain": "1.0.0-*"
-    },
+  "dependencies": {
+    "Tsc.DataAccess": "1.0.0-*",
+    "Tsc.Domain": "1.0.0-*"
+  },
 
-    "commands": {
-        "Tsc.DataAccess.TestConsole": "Tsc.DataAccess.TestConsole"
-    },
+  "commands": {
+    "Tsc.DataAccess.TestConsole": "Tsc.DataAccess.TestConsole"
+  },
 
-    "frameworks": {
-        "dnx451": { },
-        "dnxcore50": {
-            "dependencies": {
-            }
-        }
+  "frameworks": {    
+    "net451": {
+      "dependencies": {
+        "Microsoft.CSharp": "4.0.0",
+        "System.Linq": "4.0.0",
+        "System.Threading": "4.0.10"
+      }
     }
+  }
 }
