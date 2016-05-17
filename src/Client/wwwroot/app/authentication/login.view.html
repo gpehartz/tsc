@@ -14,7 +14,6 @@
 
                     <button (click)="onLoginClick()" class="btn btn-lg btn-primary btn-block">Bejelentkezés</button>
                     <label *ngIf="errorMessage" class="er" >{{errorMessage}}</label>
-
                 </form>
                 <br/>
                 <a class="btn btn-block btn-social btn-facebook">
@@ -25,22 +24,22 @@
                 </a>
             </section>
             <br />
-            Vagy regisztrálj most!
+            Vagy regisztrálj most! Különben...
             <br />
             <section class="login-form">
                 <form method="POST" action="#">
-                    <br />
-                    <input type="email" name="email" placeholder="email" required class="form-control input-lg"/>
+                    <br/>
+                    <input type="email" name="email" placeholder="email" required class="form-control input-lg" [(ngModel)]="loginEmail"/>
                     <br/>
                     <input type="text" name="username" placeholder="felhasználónév" required class="form-control input-lg"/>
                     <br/>
                     <input type="text" name="name" placeholder="Név" required class="form-control input-lg"/>
                     <br/>
-                    <input type="password" class="form-control input-lg" id="password" placeholder="jelszó" required=""/>
+                    <input type="password" class="form-control input-lg" id="password" placeholder="jelszó" required="" [(ngModel)]="loginPassword"/>
                     <br/>
                     <div class="pwstrength_viewport_progress"></div>
 
-                    <button (click)="onRegisterClick()"  class="btn btn-lg btn-primary btn-block">Regisztráció</button>
+                    <button (click)="onRegisterClick()" class="btn btn-lg btn-primary btn-block">Regisztráció</button>
                 </form>
             </section>
         </div>

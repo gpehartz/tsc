@@ -23,7 +23,7 @@ namespace Client.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserPasswordCredentials credentials)
         {
             if (credentials == null)
@@ -49,16 +49,22 @@ namespace Client.Controllers
 
         [HttpPost("register")]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(UserPasswordCredentials credentials)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register([FromBody]UserPasswordCredentials credentials)
         {
             if (credentials == null)
             {
                 return HttpBadRequest();
             }
 
+            var user = 
+                new User
+                {
+                    UserName = credentials.Email,
+                    Email = credentials.Email
+                };
+
             IActionResult result;
-            var user = new User { UserName = credentials.Email, Email = credentials.Email };
             var createResult = await _userManager.CreateAsync(user, credentials.Password);
             if (createResult.Succeeded)
             {

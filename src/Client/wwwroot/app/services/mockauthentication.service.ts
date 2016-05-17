@@ -1,5 +1,5 @@
 ﻿import {Injectable, EventEmitter, Output} from "angular2/core";
-import {Http} from 'angular2/http'
+import {Http, Headers} from 'angular2/http'
 import 'rxjs/add/operator/map'
 import {Login} from '../servicemodels/login';
 
@@ -20,16 +20,19 @@ export class AuthenticationService {
     private loopCount = 600;
     private intervalLength = 100;
 
-   constructor(private _http: Http) {
-       
-   }
+    constructor(private _http: Http) {
 
-    public doLogin(emailAddress:string, password:string)  {
+    }
+
+    public doLogin(emailAddress: string, password: string) {
 
         var login = new Login(emailAddress, password);
 
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
         return this._http
-            .post(this._url + '/login', JSON.stringify(login))
+            .post(this._url + '/login', JSON.stringify(login), { headers: headers })
             .map(res => res.json());
     }
 
@@ -45,8 +48,11 @@ export class AuthenticationService {
 
         var login = new Login(emailAddress, password);
 
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
         return this._http
-            .post(this._url + '/register', JSON.stringify(login))
+            .post(this._url + '/register', JSON.stringify(login), { headers: headers })
             .map(res => res.json());
     }
 

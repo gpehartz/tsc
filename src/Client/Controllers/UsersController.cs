@@ -8,7 +8,7 @@ namespace Client.Controllers
     [Route("api/[controller]")]
     public class UsersController
     {
-        private ITscApplication _application;
+        private readonly ITscApplication _application;
 
         public UsersController(ITscApplication application)
         {
