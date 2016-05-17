@@ -43,7 +43,16 @@ namespace Client
             services.Configure<MongoRestTscDataAccessConfiguration>(Configuration.GetSection("MongoRestTscDataAccess"));
             services.AddApplicationDependencies(Convert.ToBoolean(Configuration["ApplicationDependencies:UsePersistenRepos"]));
 
-            services.AddIdentity<User, Role>();
+            services.AddIdentity<User, Role>(options =>
+            {
+                // test only
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonLetterOrDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+            });
+
             services.AddTransient<IUserStore<User>, Tsc.Application.Services.UserStore<User>>();
             services.AddTransient<IRoleStore<Role>, Tsc.Application.Services.RoleStore<Role>>();
         }

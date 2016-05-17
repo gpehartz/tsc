@@ -52,8 +52,7 @@ export class AuthenticationService {
         headers.append('Content-Type', 'application/json');
 
         return this._http
-            .post(this._url + '/register', JSON.stringify(login), { headers: headers })
-            .map(res => res.json());
+            .post(this._url + '/register', JSON.stringify(login), { headers: headers });
     }
 
     public getUserName() {

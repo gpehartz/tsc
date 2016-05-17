@@ -36,10 +36,7 @@ namespace Tsc.Application.Services
 
         public IQueryable<TUser> Users
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return _database.UsersTable<TUser>().AsQueryable(); }
         }
 
         /// <summary>
@@ -592,12 +589,57 @@ namespace Tsc.Application.Services
 
         public Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            if (claim == null)
+            {
+                throw new ArgumentNullException("claim");
+            }
+
+            if (newClaim == null)
+            {
+                throw new ArgumentNullException("newClaim");
+            }
+
+            var userClaimsAssociation = _database.UserClaimsTable<UserClaimsAssociation>().FirstOrDefault(i => Equals(i.User.Id, user.Id));
+            if (userClaimsAssociation == null)
+            {
+                userClaimsAssociation = new UserClaimsAssociation(user);
+                userClaimsAssociation.Claims.Add(claim);
+                _database.UserClaimsTable<UserClaimsAssociation>().Add(userClaimsAssociation);
+            }
+            else
+            {
+                var claimList = userClaimsAssociation.Claims.ToList();
+                var index = claimList.FindIndex(c => c == claim);
+                claimList[index] = newClaim;
+            }
+
+            return Task.FromResult(0);
         }
 
         public Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            if (claims == null)
+            {
+                throw new ArgumentNullException("claims");
+            }
+
+            var userClaimsAssociation = _database.UserClaimsTable<UserClaimsAssociation>().FirstOrDefault(i => Equals(i.User.Id, user.Id));
+            if (userClaimsAssociation != null)
+            {
+                userClaimsAssociation.Claims.RemoveWhere(i => claims.Any(c => c == i));
+            }
+
+            return Task.FromResult(0);
         }
 
         public Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
@@ -621,37 +663,76 @@ namespace Tsc.Application.Services
 
         public Task<DateTimeOffset?> GetLockoutEndDateAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            return Task.FromResult(user.LockoutEnd);
         }
 
         public Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            user.LockoutEnd = lockoutEnd;
+            return Task.FromResult(0);
         }
 
         public Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            user.AccessFailedCount += user.AccessFailedCount;
+            return Task.FromResult(0);
         }
 
         public Task ResetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            user.AccessFailedCount = 0;
+            return Task.FromResult(0);
         }
 
         public Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            return Task.FromResult(user.AccessFailedCount);
         }
 
         public Task<bool> GetLockoutEnabledAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            return Task.FromResult(user.LockoutEnabled);
         }
 
         public Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            user.LockoutEnabled = enabled;
+            return Task.FromResult(0);
         }
 
         #endregion
