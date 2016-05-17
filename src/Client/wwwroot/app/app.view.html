@@ -21,9 +21,12 @@
                 </li>
                 <li>
                     <a [routerLink]="['Tournaments']">Bajnokságok</a>
-                </li> 
-                <li>
+                </li>
+                <li *ngIf="!authenticated">
                     <a [routerLink]="['Login']">Bejelentkezés/Regisztráció</a>
+                </li>
+                <li *ngIf="authenticated">
+                    <a [routerLink]="['Login']">Üdv: {{username}} !</a> <!--TODO: myprofile oldalra routing-->
                 </li>
             </ul>
         </div>

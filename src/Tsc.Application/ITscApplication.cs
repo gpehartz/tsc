@@ -11,8 +11,10 @@ namespace Tsc.Application
         Team GetTeam(Guid id);
 
         Team AddTeam(Team team);
-
+        
         IEnumerable<Tournament> GetAllTournaments();
+        
+        IEnumerable<User> GetAllUsers();
 
         Tournament GetTournament(Guid id);
 

@@ -3,10 +3,12 @@ using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 using Tsc.Application;
 using Tsc.Application.ServiceModel;
+using Microsoft.AspNet.Authorization;
 
 namespace Client.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class TeamsController : Controller
     {
         private readonly ITscApplication _application;
@@ -17,6 +19,7 @@ namespace Client.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IEnumerable<Team> Get()
         {
             return _application.GetAllTeams();
