@@ -39,16 +39,8 @@ namespace Client.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post()
+        public IActionResult Post([FromBody]Tournament tournament)
         {
-            var file = Request.Form.Files[0];
-            var fileName = Guid.NewGuid() + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-
-            Request.Form.Files[0].SaveAsAsync(Path.Combine(@"c:\Work\tsc\src\Client\wwwroot\images\", fileName));
-
-            var tournament = JsonConvert.DeserializeObject<Tournament>(Request.Form["tournament"]);
-            tournament.LogoUrl = Path.Combine(@"http://localhost:8000/images/", fileName);
-
             if (tournament == null)
             {
                 return HttpBadRequest();

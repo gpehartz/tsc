@@ -26,11 +26,11 @@
     </div>
 
     <div class="form-group">
-        <label for="tournamentLogo">Logó</label>
-        <input type="file" id="inputTournamentLogo" (change)="fileChangeEvent($event)" accept="image/*">
-        <p class="help-block">Válassz logót a bajnoksághoz.</p>
+        <label>Logó</label>
+        <p class="help-block">Válassz logót a csapathoz.</p>
+        <imgur (onUploaded)="onLogoUploaded($event)"></imgur>
     </div>
-
+    
     <div class="form-group" ngControlGroup="teamGroup" #teamGroup="ngForm">
         <label>Csapatok</label>
         <p class="help-block">Válaszd ki a részt vevő csapatokat.</p>

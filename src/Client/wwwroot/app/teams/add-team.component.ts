@@ -6,10 +6,11 @@ import {ITeamService, TeamServiceToken} from '../services/team.service';
 import {IUserService, UserServiceToken} from '../services/user.service';
 import {User} from '../servicemodels/user';
 import {Team} from '../servicemodels/team';
+import {ImgurComponent} from '../common/imgur.component';
 
 @Component({
     templateUrl: 'app/teams/add-team.view.html',
-    styleUrls: ['css/common.css']
+    directives: [ImgurComponent]
 })
 export class AddTeamComponent implements OnInit {
     addTeamForm: ControlGroup;
@@ -17,8 +18,7 @@ export class AddTeamComponent implements OnInit {
     users: User[];
     selectedUsers: User[];
     isInitialize: boolean;
-    logoUrl: string;
-    logoReposense: string;
+    imgurUrl: string;
 
     constructor(private _router: Router,
         private _fb: FormBuilder,
@@ -47,7 +47,7 @@ export class AddTeamComponent implements OnInit {
 
     save() {
         this._teamService
-            .addTeam(new Team(this.teamName, new Array<Team>(), this.logoUrl))
+            .addTeam(new Team(this.teamName, new Array<Team>(), this.imgurUrl))
             .subscribe(item => this._router.navigate(['TeamsCenter']));
     }
 
@@ -67,32 +67,7 @@ export class AddTeamComponent implements OnInit {
         removeFrom.splice(index, 1);  
     }
 
-    upload($event) {
-        console.log($event);
-    }
-    
-    fileChangeEvent(fileInput: any) {
-
-        var fileToUpload = fileInput.target.files[0];
-
-        var formData = new FormData();
-        formData.append("image", fileToUpload); 
-
-        var xhr = new XMLHttpRequest(); 
-        xhr.open("POST", "https://api.imgur.com/3/image");
-
-        xhr.onload = () => {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    this.logoUrl = JSON.parse(xhr.responseText).data.link;
-                } else {
-                    this.logoReposense = xhr.responseText;
-                }
-            }
-        }
-
-        xhr.setRequestHeader('Authorization', 'Client-ID cfc1c4d88be16f5'); 
-        
-        xhr.send(formData);
+    onLogoUploaded(url: string) {
+        this.imgurUrl = url;
     }
 }

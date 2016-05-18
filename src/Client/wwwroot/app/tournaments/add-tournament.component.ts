@@ -8,16 +8,18 @@ import {ITournamentService, TournamentServiceToken} from '../services/tournament
 import {TeamWithSelection} from '../models/teamwithselection';
 import {Team} from '../servicemodels/team';
 import {Tournament} from '../servicemodels/tournament';
+import {ImgurComponent} from '../common/imgur.component';
 
 
 @Component({
-    templateUrl: 'app/tournaments/add-tournament.view.html'
+    templateUrl: 'app/tournaments/add-tournament.view.html',
+    directives: [ImgurComponent]
 })
 export class AddTournamentComponent implements OnInit {
     addTournamentForm: ControlGroup;
     tournamentName: string;
     teamsWithSelection: TeamWithSelection[];
-    fileToUpload: File;
+    imgurUrl: string;
 
     constructor(private _router: Router,
         private _fb: FormBuilder,
@@ -51,12 +53,15 @@ export class AddTournamentComponent implements OnInit {
     save() {
         var selectedTeams = this.teamsWithSelection.filter(item => item.isSelected).map(item => item.team);
 
-        this._tournamentService.addTournament(new Tournament(this.tournamentName, selectedTeams), this.fileToUpload)
-                               .then(item => this._router.navigate(['TournamentsCenter']), item => { });
+        var tournament = new Tournament(this.tournamentName, selectedTeams)
+        tournament.logoUrl = this.imgurUrl;
+
+        this._tournamentService.addTournament(tournament)
+            .subscribe(item => this._router.navigate(['TournamentsCenter']));
     }
 
-    fileChangeEvent(fileInput: any) {
-        this.fileToUpload = <File>fileInput.target.files[0];
+    onLogoUploaded(url: string) {
+        this.imgurUrl = url;
     }
 
     static validateTeamSelection(group: ControlGroup) {
