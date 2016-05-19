@@ -1,0 +1,53 @@
+﻿<h2>Új bajnokság létrehozása</h2>
+
+<form [ngFormModel]="addTournamentForm">
+    <div class="form-group has-feedback"
+         [ngClass]="{
+                     'has-success': !addTournamentForm.pristine && addTournamentForm.controls['inputTournamentName'].valid,
+                     'has-error': !addTournamentForm.pristine && !addTournamentForm.controls['inputTournamentName'].valid
+                    }">
+        
+        <label for="inputTournamentName">Név</label>
+
+        <input type="text" id="inputTournamentName" ngControl="inputTournamentName" #inputTournamentName="ngForm" class="form-control" [(ngModel)]="tournamentName"
+               placeholder="Bajnokság neve" />
+
+        <span *ngIf="!addTournamentForm.pristine" class="glyphicon form-control-feedback"
+              [ngClass]="{
+                          'glyphicon-ok': inputTournamentName.valid,
+                          'glyphicon-remove': !inputTournamentName.valid
+                         }"
+              aria-hidden="true">
+        </span>
+
+        <div *ngIf="!addTournamentForm.pristine && inputTournamentName.errors">           
+            <div *ngIf="inputTournamentName.errors.required" class="alert alert-danger">A bajnokság neve kötelező!</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="tournamentLogo">Logó</label>
+        <input type="file" id="inputTournamentLogo" (change)="fileChangeEvent($event)" accept="image/*">
+        <p class="help-block">Válassz logót a bajnoksághoz.</p>
+    </div>
+
+    <div class="form-group" ngControlGroup="teamGroup" #teamGroup="ngForm">
+        <label>Csapatok</label>
+        <p class="help-block">Válaszd ki a részt vevő csapatokat.</p>
+
+        <div *ngFor="let teamWithSelection of teamsWithSelection; #i=index">
+            <div class="checkbox">
+                <label><input type="checkbox" ngControl="{{teamWithSelection.team.id}}" [(ngModel)]="teamWithSelection.isSelected" />{{teamWithSelection.team.name}}</label>
+            </div>
+        </div>
+
+        <div *ngIf="!addTournamentForm.pristine && teamGroup.errors">
+            <div *ngIf="teamGroup.errors.noTeamSelected" class="alert alert-danger">Legalább egy csapat választása kötelező!</div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a class="btn btn-primary" (click)="cancel()">Mégse</a>
+    <a class="btn btn-primary" [ngClass]="{'disabled': !addTournamentForm.valid}" (click)="save()">Mentés</a>
+</div>

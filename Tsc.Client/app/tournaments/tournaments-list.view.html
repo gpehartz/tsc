@@ -1,0 +1,32 @@
+﻿<h2>Bajnokságok listája</h2>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Név</th>
+        <th>Logó</th>
+        <th>Létrehozás dátuma</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let tournament of tournaments">
+            <td class="myTd">{{tournament.name}}</td>
+            <td class="text-center myTd">
+                <div *ngIf="tournament.logoUrl">
+                    <img class="logoStyle" src="{{tournament.logoUrl}}" />
+                </div>
+            </td>
+            <td class="myTd">{{tournament.creationDate}}</td>
+            <td class="text-center myTd">
+                <button class="btn btn-default btn-sm" (click)="onSelect(tournament)"><i class="glyphicon glyphicon-option-horizontal"></i></button>
+            </td>
+            <td class="text-center myTd">
+                <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<a class="btn btn-primary" (click)="addTournament()">Új bajnokság</a>
