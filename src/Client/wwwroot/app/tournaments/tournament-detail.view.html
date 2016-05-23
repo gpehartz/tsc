@@ -1,5 +1,12 @@
 ﻿<div *ngIf="tournament" class="row">
-    <h2>{{tournament.name}} - részletek</h2>
+    <div>
+        <div class="inline">
+            <img *ngIf="tournament.logoUrl" class="logoStyle" src="{{tournament.logoUrl}}" />
+        </div>
+        <div class="inline">
+            <h2>{{tournament.name}} - részletek</h2>
+        </div>
+    </div>
 
     <br>
 

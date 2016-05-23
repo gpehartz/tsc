@@ -13,6 +13,7 @@ import {ImgurComponent} from '../common/imgur.component';
 
 @Component({
     templateUrl: 'app/tournaments/add-tournament.view.html',
+    styleUrls: ['css/common.css'],
     directives: [ImgurComponent]
 })
 export class AddTournamentComponent implements OnInit {

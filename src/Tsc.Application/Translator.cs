@@ -11,7 +11,7 @@ namespace Tsc.Application
 
         public Domain.Team TranslateToDomain(ServiceModel.Team team)
         {
-            return new Domain.Team(team.Id, team.Name, team.CreationDate);
+            return new Domain.Team(team.Id, team.Name, team.CreationDate, team.LogoUrl);
         }
 
         public Domain.Team TranslateToDomainNew(ServiceModel.Team team)
@@ -74,6 +74,7 @@ namespace Tsc.Application
             return new ServiceModel.TournamentResultItem
             {
                 Position = resultItem.Position,
+                LogoUrl = resultItem.LogoUrl,
                 TeamName = resultItem.TeamName,
                 Points = resultItem.Points,
                 Played = resultItem.Played,

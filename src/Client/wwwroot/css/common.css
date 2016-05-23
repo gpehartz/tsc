@@ -2,8 +2,15 @@
     border-radius: 32px;
     height: 64px;
     width: 64px;
+    margin: 5px;
 }
 
 .myTd {
     vertical-align: middle;
 }
+
+.inline {
+    display: inline-block;
+}
+
+

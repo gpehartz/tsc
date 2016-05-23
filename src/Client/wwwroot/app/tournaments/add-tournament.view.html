@@ -37,7 +37,17 @@
 
         <div *ngFor="#teamWithSelection of teamsWithSelection; #i=index">
             <div class="checkbox">
-                <label><input type="checkbox" ngControl="{{teamWithSelection.team.id}}" [(ngModel)]="teamWithSelection.isSelected" />{{teamWithSelection.team.name}}</label>
+                <label>
+                    <div class="m">
+                        <input type="checkbox" ngControl="{{teamWithSelection.team.id}}" [(ngModel)]="teamWithSelection.isSelected" />
+                        <div class="inline">
+                            <img *ngIf="teamWithSelection.team.logoUrl" class="logoStyle" src="{{teamWithSelection.team.logoUrl}}"/>
+                        </div>
+                        <div class="inline">
+                            {{teamWithSelection.team.name}}
+                        </div>
+                    </div>
+                </label>
             </div>
         </div>
 

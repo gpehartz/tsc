@@ -8,6 +8,7 @@ import {TournamentRoundsComponent} from './controls/tournamentrounds.component';
 
 @Component({
     templateUrl: 'app/tournaments/tournament-detail.view.html',
+    styleUrls: ['css/common.css'],
     directives: [TournamentTableComponent, TournamentRoundsComponent]
 })
 export class TournamentDetailComponent implements OnInit {

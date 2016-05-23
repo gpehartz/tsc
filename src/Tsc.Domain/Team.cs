@@ -33,12 +33,13 @@ namespace Tsc.Domain
         /// <param name="id"></param>
         /// <param name="name"></param>
         /// <param name="creationDate"></param>
-        public Team(Guid id, string name, DateTime creationDate)
+        public Team(Guid id, string name, DateTime creationDate, string logoUrl)
             :this()
         {
             Id = id;
             Name = name;
             CreationDate = creationDate;
+            LogoUrl = logoUrl;
         }
 
         /// <summary>

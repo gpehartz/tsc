@@ -4,6 +4,8 @@
     {
         public int Position { get; set; }
 
+        public string LogoUrl { get; set; }
+
         public string TeamName { get; set; }
 
         public int Played { get; set; }

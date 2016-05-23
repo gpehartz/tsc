@@ -4,6 +4,11 @@
     {
         public int Position { get; set; }
 
+        public string LogoUrl
+        {
+            get { return Team.LogoUrl; }
+        }
+
         public string TeamName
         {
             get { return Team.Name; }

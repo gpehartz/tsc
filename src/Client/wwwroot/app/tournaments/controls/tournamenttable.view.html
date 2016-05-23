@@ -3,6 +3,9 @@
     <tr>
         <th class="text-center col-sm-1">Pozíció</th>
         <th class="text-center">
+            <div class="show-tooltip" title="Logó">Logó</div>
+        </th>
+        <th class="text-center">
             <div class="show-tooltip" title="Csapat neve">Név</div>
         </th>
         <th class="text-center">
@@ -34,6 +37,7 @@
     <tbody>
     <tr *ngFor="#tableItem of tournament.table">
         <td class="text-center"><b>{{tableItem.position}}</b></td>
+        <td><img *ngIf="tableItem.logoUrl" class="logoStyle" src="{{tableItem.logoUrl}}" /></td>
         <td>{{tableItem.teamName}}</td>
         <td class="text-center">{{tableItem.played}}</td>
         <td class="text-center">{{tableItem.won}}</td>
