@@ -24,7 +24,7 @@ namespace Client.Controllers
         [HttpPost("login")]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(UserPasswordCredentials credentials)
+        public async Task<IActionResult> Login([FromBody]UserPasswordCredentials credentials)
         {
             if (credentials == null)
             {

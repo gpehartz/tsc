@@ -1,0 +1,161 @@
+﻿<div *ngIf="tournament" class="row">
+    <h2>{{tournament.name}} - eredmények rögzítése</h2>
+
+    <br />
+
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="selectMatchDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Válassz meccset
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="selectMatchDropdown">
+            <li *ngFor="let fixture of fixtures"
+                [ngClass]="{
+                                    'divider': fixture.isSeparator,
+                                    'dropdown-header': fixture.isHeader
+                                }">
+                <a href="javascript:void(0);" *ngIf="!fixture.isSeparator && !fixture.isHeader" (click)="selectMatch(fixture)">{{fixture.description}}</a>
+                <div *ngIf="fixture.isSeparator || fixture.isHeader">{{fixture.description}}</div>
+            </li>
+        </ul>
+    </div>
+
+    <div *ngIf="selectedFixture">
+        <h3>{{selectedFixture.description}}</h3>
+        <br />
+
+        <form [ngFormModel]="addFixtureResultForm">
+
+            <div class="form-group form-inline" ngControlGroup="result1Group" #result1Group="ngForm">
+                <div class="form-group has-feedback"
+                     [ngClass]="{
+                                        'has-success': !addFixtureResultForm.pristine && result1Group.valid,
+                                        'has-error': !addFixtureResultForm.pristine && !result1Group.valid
+                                    }">
+                    <label>1. meccs:</label>
+                    <input type="text" id="inputMatch1Home" class="form-control" placeholder="Eredmény"
+                           ngControl="inputMatch1Home" #inputMatch1Home="ngForm" [(ngModel)]="match1Home" />
+
+                    <span class="glyphicon form-control-feedback" aria-hidden="true"
+                          [ngClass]="{
+                                            'glyphicon-ok': !addFixtureResultForm.pristine && result1Group.valid,
+                                            'glyphicon-remove': !addFixtureResultForm.pristine && !result1Group.valid
+                                            }">
+                    </span>
+
+                </div>
+                <div class="form-group has-feedback"
+                     [ngClass]="{
+                                        'has-success': !addFixtureResultForm.pristine && result1Group.valid,
+                                        'has-error': !addFixtureResultForm.pristine && !result1Group.valid
+                                    }">
+                    <label>vs.</label>
+                    <input type="text" id="inputMatch1Away" class="form-control" placeholder="Eredmény"
+                           ngControl="inputMatch1Away" #inputMatch1Away="ngForm" [(ngModel)]="match1Away" />
+
+                    <span class="glyphicon form-control-feedback" aria-hidden="true"
+                          [ngClass]="{
+                                            'glyphicon-ok': !addFixtureResultForm.pristine && result1Group.valid,
+                                            'glyphicon-remove': !addFixtureResultForm.pristine && !result1Group.valid
+                                            }">
+                    </span>
+                </div>
+
+                <div *ngIf="!addFixtureResultForm.pristine && !result1Group.valid">
+                    <div *ngIf="result1Group.errors.notNumber" class="alert alert-danger">Csak számot lehet beírni!</div>
+                    <div *ngIf="result1Group.errors.invalidMatchResult" class="alert alert-danger">A két szám összegének 10-nek kell lennie!</div>
+                    <div *ngIf="result1Group.errors.notFilled" class="alert alert-danger">Mind a két eredmény mezőt ki kell tölteni!</div>
+                </div>
+            </div>
+
+
+            <div class="form-group form-inline" ngControlGroup="result2Group" #result2Group="ngForm">
+                <div class="form-group has-feedback"
+                     [ngClass]="{
+                                        'has-success': !addFixtureResultForm.pristine && result2Group.valid,
+                                        'has-error': !addFixtureResultForm.pristine && !result2Group.valid
+                                    }">
+                    <label>2. meccs:</label>
+                    <input type="text" id="inputMatch2Home" class="form-control" placeholder="Eredmény"
+                           ngControl="inputMatch2Home" #inputMatch2Home="ngForm" [(ngModel)]="match2Home" />
+
+                    <span class="glyphicon form-control-feedback" aria-hidden="true"
+                          [ngClass]="{
+                                            'glyphicon-ok': !addFixtureResultForm.pristine && result2Group.valid,
+                                            'glyphicon-remove': !addFixtureResultForm.pristine && !result2Group.valid
+                                            }">
+                    </span>
+                </div>
+                <div class="form-group has-feedback"
+                     [ngClass]="{
+                                        'has-success': !addFixtureResultForm.pristine && result2Group.valid,
+                                        'has-error': !addFixtureResultForm.pristine && !result2Group.valid
+                                    }">
+                    <label>vs.</label>
+                    <input type="text" id="inputMatch2Away" class="form-control" placeholder="Eredmény"
+                           ngControl="inputMatch2Away" #inputmatch2Away="ngForm" [(ngModel)]="match2Away" />
+
+                    <span class="glyphicon form-control-feedback" aria-hidden="true"
+                          [ngClass]="{
+                                            'glyphicon-ok': !addFixtureResultForm.pristine && result2Group.valid,
+                                            'glyphicon-remove': !addFixtureResultForm.pristine && !result2Group.valid
+                                            }">
+                    </span>
+                </div>
+
+                <div *ngIf="!addFixtureResultForm.pristine && !result2Group.valid">
+                    <div *ngIf="result2Group.errors.notNumber" class="alert alert-danger">Csak számot lehet beírni!</div>
+                    <div *ngIf="result2Group.errors.invalidMatchResult" class="alert alert-danger">A két szám összegének 10-nek kell lennie!</div>
+                    <div *ngIf="result2Group.errors.notFilled" class="alert alert-danger">Mind a két eredmény mezőt ki kell tölteni!</div>
+                </div>
+            </div>
+
+
+            <div class="form-group form-inline" ngControlGroup="result3Group" #result3Group="ngForm">
+                <div class="form-group has-feedback"
+                     [ngClass]="{
+                                        'has-success': !addFixtureResultForm.pristine && result3Group.valid,
+                                        'has-error': !addFixtureResultForm.pristine && !result3Group.valid
+                                    }">
+                    <label>3. meccs:</label>
+                    <input type="text" id="inputMatch3Home" class="form-control" placeholder="Eredmény"
+                           ngControl="inputMatch3Home" #inputMatch2Home="ngForm" [(ngModel)]="match3Home" />
+
+                    <span class="glyphicon form-control-feedback" aria-hidden="true"
+                          [ngClass]="{
+                                            'glyphicon-ok': !addFixtureResultForm.pristine && result3Group.valid,
+                                            'glyphicon-remove': !addFixtureResultForm.pristine && !result3Group.valid
+                                            }">
+                    </span>
+                </div>
+                <div class="form-group has-feedback"
+                     [ngClass]="{
+                                        'has-success': !addFixtureResultForm.pristine && result3Group.valid,
+                                        'has-error': !addFixtureResultForm.pristine && !result3Group.valid
+                                    }">
+                    <label>vs.</label>
+                    <input type="text" id="inputMatch3Away" class="form-control" placeholder="Eredmény"
+                           ngControl="inputMatch3Away" #inputmatch3Away="ngForm" [(ngModel)]="match3Away" />
+
+                    <span class="glyphicon form-control-feedback" aria-hidden="true"
+                          [ngClass]="{
+                                            'glyphicon-ok': !addFixtureResultForm.pristine && result3Group.valid,
+                                            'glyphicon-remove': !addFixtureResultForm.pristine && !result3Group.valid
+                                            }">
+                    </span>
+                </div>
+
+                <div *ngIf="!addFixtureResultForm.pristine && !result3Group.valid">
+                    <div *ngIf="result3Group.errors.notNumber" class="alert alert-danger">Csak számot lehet beírni!</div>
+                    <div *ngIf="result3Group.errors.invalidMatchResult" class="alert alert-danger">A két szám összegének 10-nek kell lennie!</div>
+                    <div *ngIf="result3Group.errors.notFilled" class="alert alert-danger">Mind a két eredmény mezőt ki kell tölteni!</div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <br />
+
+    <a class="btn btn-primary" (click)="back()">Vissza</a>
+    <a class="btn btn-primary" [ngClass]="{'disabled': !addFixtureResultForm.valid}" (click)="save()">Mentés</a>
+</div>

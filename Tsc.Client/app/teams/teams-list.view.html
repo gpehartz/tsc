@@ -1,0 +1,28 @@
+﻿<h2>Csapatok listája</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Név</th>
+            <th>Logó</th>
+            <th>Létrehozás dátuma</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let team of teams">
+            <td>{{team.name}}</td>
+            <td class="text-center myTd">
+                <div *ngIf="team.logoUrl">
+                    <img class="logoStyle" src="{{team.logoUrl}}" />
+                </div>
+            </td>
+            <td>{{team.creationDate}}</td>
+            <td class="text-center">
+                <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<a class="btn btn-primary" (click)="addTeam()">Új csapat</a>

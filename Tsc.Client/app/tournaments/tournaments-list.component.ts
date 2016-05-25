@@ -1,0 +1,28 @@
+﻿import {Component, OnInit, Inject} from '@angular/core';
+import {Router} from '@angular/router-deprecated';
+
+import {ITournamentService, TournamentServiceToken} from '../services/tournament.service';
+import {Tournament} from '../servicemodels/tournament';
+
+@Component({
+    templateUrl: 'app/tournaments/tournaments-list.view.html',
+    styleUrls: ['css/common.css']
+})
+export class TournamentsListComponent implements OnInit {
+    tournaments: Tournament[];
+
+    constructor(private _router: Router,
+        @Inject(TournamentServiceToken) private _tournamentService: ITournamentService) { }
+
+    addTournament() {
+        this._router.navigate(['TournamentCreator']);
+    }
+
+    ngOnInit() {
+        this._tournamentService.getTournaments().subscribe(item => this.tournaments = item.json());
+    }
+
+    onSelect(tournament: Tournament) {
+        this._router.navigate(['TournamentDetail', { id: tournament.id }]);
+    }
+}

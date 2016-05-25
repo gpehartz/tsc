@@ -1,0 +1,14 @@
+﻿{
+    "version": "1.0.0-*",
+
+    "dependencies": {
+        "Tsc.Domain": "1.0.0-*",
+        "Tsc.Identity": "1.0.0-*",
+        "Tsc.Application.Definition": "1.0.0-*",
+        "Tsc.DataAccess": "1.0.0-*"
+    },
+
+    "frameworks": {
+        "net461": { }
+    }
+}

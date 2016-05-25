@@ -156,7 +156,10 @@ namespace Tsc.Application.Services
 
         #region Implementation of IQueryableRoleStore<TRole>
 
-        public IQueryable<TRole> Roles { get; }
+        public IQueryable<TRole> Roles
+        {
+            get { return _database.RolesTable<TRole>().AsQueryable(); }
+        }
 
         #endregion
 
