@@ -7,6 +7,8 @@ import {Team} from '../servicemodels/team';
 export interface ITeamService {
     getTeams(): Observable<Response>;
 
+    getTeamPage(page: number): Observable<Response>;
+
     getTeam(id: number): Observable<Response>;
 
     addTeam(team: Team): Observable<Response>;
@@ -25,6 +27,10 @@ export class TeamService implements ITeamService {
 
     getTeam(id: number) {
         return this._http.get('http://localhost:8081/api/teams/' + id);
+    }
+
+    getTeamPage(page: number) {
+        return this._http.get("http://localhost:8081/api/teams/" + page + "/10")
     }
 
     addTeam(team: Team) {

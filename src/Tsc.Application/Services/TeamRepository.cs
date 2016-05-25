@@ -19,7 +19,23 @@ namespace Tsc.Application.Services
                 new Team("Csacsicsapat", new List<User>(), string.Empty),
                 new Team("Reményteli esetek", new List<User>(), string.Empty),
                 new Team("Hullámreccsentők", new List<User>(), string.Empty),
-                new Team("Fakanálforgatók", new List<User>(), string.Empty)
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
+                new Team("Fakanálforgatók", new List<User>(), string.Empty),
             };
 
         public void Save(Team team)

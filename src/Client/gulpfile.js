@@ -34,7 +34,7 @@ var dependencies = [
     paths.npm + 'rxjs/bundles/Rx.js',
     paths.npm + 'bootstrap/dist/js/bootstrap*.js',
     paths.npm + 'jquery/dist/jquery*.js',
-    paths.npm + 'ng2-uploader/bundles/ng2-uploader.js'
+    paths.npm + 'ng2-pagination/dist/ng2-pagination-bundle.js'
 ];
 
 var styleSheets = [

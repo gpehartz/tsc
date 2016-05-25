@@ -49,6 +49,17 @@ namespace Client.Controllers
             return CreatedAtRoute("GetTeam", new { id = newTeam.Id }, newTeam);
         }
 
+
+        [HttpGet]
+        [AllowAnonymous] // TODO only for pagination test, VZ2
+        [Route("{pageIndex:int}/{pageSize:int}")]
+        public PagedResponse<Team> Get(int pageIndex, int pageSize)
+        {
+            var teams = _application.GetAllTeams();
+
+            return new PagedResponse<Team>(teams, pageIndex, pageSize);
+        }
+
         /*
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)

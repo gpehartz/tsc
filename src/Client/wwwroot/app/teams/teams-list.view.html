@@ -1,28 +1,46 @@
 ﻿<h2>Csapatok listája</h2>
 
-<table class="table table-bordered">
+<!--<table class="table table-bordered">
     <thead>
-        <tr>
-            <th>Név</th>
-            <th>Logó</th>
-            <th>Létrehozás dátuma</th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>Név</th>
+        <th>Logó</th>
+        <th>Létrehozás dátuma</th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-        <tr *ngFor="#team of teams">
-            <td>{{team.name}}</td>
-            <td class="text-center myTd">
-                <div *ngIf="team.logoUrl">
-                    <img class="logoStyle" src="{{team.logoUrl}}" />
-                </div>
-            </td>
-            <td>{{team.creationDate}}</td>
-            <td class="text-center">
-                <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
-            </td>
-        </tr>
+    <tr *ngFor="#team of teams">
+        <td>{{team.name}}</td>
+        <td class="text-center myTd">
+            <div *ngIf="team.logoUrl">
+                <img class="logoStyle" src="{{team.logoUrl}}"/>
+            </div>
+        </td>
+        <td>{{team.creationDate}}</td>
+        <td class="text-center">
+            <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
+        </td>
+    </tr>
     </tbody>
-</table>
+</table>-->
+
+<div class="container">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Text</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="#team of teams | async | paginate: { id: 'server', itemsPerPage: 10, currentPage: _page, totalItems: _total }">
+                <td>{{team.name}}</td>
+                <td>{{team.creationDate}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination-controls (pageChange)="getPage($event)" id="server"></pagination-controls>
+</div>
 
 <a class="btn btn-primary" (click)="addTeam()">Új csapat</a>
