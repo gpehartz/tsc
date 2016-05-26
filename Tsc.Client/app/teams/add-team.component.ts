@@ -3,27 +3,28 @@ import {Router} from '@angular/router-deprecated';
 import {FormBuilder, Validators, Control, ControlGroup} from '@angular/common';
 
 import {ITeamService, TeamServiceToken} from '../services/team.service';
-import {IUserService, UserServiceToken} from '../services/user.service';
-import {User} from '../servicemodels/user';
+import {IPlayerService, PlayerServiceToken} from '../services/player.service';
+import {Player} from '../servicemodels/player';
 import {Team} from '../servicemodels/team';
+import {ImgurComponent} from '../common/imgur.component';
 
 @Component({
     templateUrl: 'app/teams/add-team.view.html',
-    styleUrls: ['css/common.css']
+    styleUrls: ['css/common.css'],
+    directives: [ImgurComponent]
 })
 export class AddTeamComponent implements OnInit {
     addTeamForm: ControlGroup;
     teamName: string; 
-    users: User[];
-    selectedUsers: User[];
+    players: Player[];
+    selectedUsers: Player[];
     isInitialize: boolean;
-    logoUrl: string;
-    logoReposense: string;
+    imgurUrl: string;
 
     constructor(private _router: Router,
         private _fb: FormBuilder,
         @Inject(TeamServiceToken) private _teamService: ITeamService,
-        @Inject(UserServiceToken) private _userService: IUserService) {
+        @Inject(PlayerServiceToken) private _userService: IPlayerService) {
 
         this.addTeamForm = this._fb.group({
             inputTeamName: ["", Validators.required]
@@ -33,11 +34,11 @@ export class AddTeamComponent implements OnInit {
     ngOnInit() {
         this.isInitialize = true;
 
-        this.users = new Array<User>();
-        this.selectedUsers= new Array<User>();
+        this.players = new Array<Player>();
+        this.selectedUsers= new Array<Player>();
         
         this._userService.getUsers().subscribe(item => {
-            this.users = <User[]>item.json();
+            this.players = <Player[]>item.json();
         });
     }
 
@@ -47,52 +48,27 @@ export class AddTeamComponent implements OnInit {
 
     save() {
         this._teamService
-            .addTeam(new Team(this.teamName, new Array<Team>(), this.logoUrl))
+            .addTeam(new Team(this.teamName, new Array<Team>(), this.imgurUrl))
             .subscribe(item => this._router.navigate(['TeamsCenter']));
     }
 
-    onAddUserToTeam(user: User) {
+    onAddPlayerToTeam(player: Player) {
         this.isInitialize = false;
-        this.removeUserFrom(this.users, user);
-        this.selectedUsers.push(user);
+        this.removePlayerFrom(this.players, player);
+        this.selectedUsers.push(player);
     }
 
-    onRemoveUserFromTeam(user: User) {
-        this.users.push(user);
-        this.removeUserFrom(this.selectedUsers, user);
+    onRemovePlayerFromTeam(player: Player) {
+        this.players.push(player);
+        this.removePlayerFrom(this.selectedUsers, player);
     }
 
-    removeUserFrom(removeFrom: User[], userToRemove: User) {
-        var index = removeFrom.indexOf(userToRemove);
+    removePlayerFrom(removeFrom: Player[], playerToRemove:Player) {
+        var index = removeFrom.indexOf(playerToRemove);
         removeFrom.splice(index, 1);  
     }
 
-    upload($event) {
-        console.log($event);
-    }
-    
-    fileChangeEvent(fileInput: any) {
-
-        var fileToUpload = fileInput.target.files[0];
-
-        var formData = new FormData();
-        formData.append("image", fileToUpload); 
-
-        var xhr = new XMLHttpRequest(); 
-        xhr.open("POST", "https://api.imgur.com/3/image");
-
-        xhr.onload = () => {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    this.logoUrl = JSON.parse(xhr.responseText).data.link;
-                } else {
-                    this.logoReposense = xhr.responseText;
-                }
-            }
-        }
-
-        xhr.setRequestHeader('Authorization', 'Client-ID cfc1c4d88be16f5'); 
-        
-        xhr.send(formData);
+    onLogoUploaded(url: string) {
+        this.imgurUrl = url;
     }
 }

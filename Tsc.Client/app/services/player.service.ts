@@ -2,26 +2,26 @@
 import {Http, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 
-import {User} from '../servicemodels/user';
+import {Player} from '../servicemodels/player';
 
-export interface IUserService {
+export interface IPlayerService {
     getUsers(): Observable<Response>;
 
     getUser(id: number): Observable<Response>;
 }
 
-export let UserServiceToken = new OpaqueToken('IUserService');
+export let PlayerServiceToken = new OpaqueToken('IPlayerService');
 
 @Injectable()
-export class UserService implements IUserService {
+export class PlayerService implements IPlayerService {
 
     constructor(private _http: Http) { }
 
     getUsers() {
-        return this._http.get('http://localhost:8081/api/users');
+        return this._http.get('http://localhost:8081/api/players');
     }
 
     getUser(id: number) {
-        return this._http.get('http://localhost:8081/api/users/' + id);
+        return this._http.get('http://localhost:8081/api/players/' + id);
     }
 }

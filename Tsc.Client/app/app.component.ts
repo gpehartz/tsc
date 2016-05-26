@@ -40,5 +40,4 @@ export class AppComponent {
     get username() {
         return this.authService.getUserName();
     }
-
 }

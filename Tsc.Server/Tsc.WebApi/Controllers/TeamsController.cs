@@ -31,6 +31,17 @@ namespace Tsc.WebApi.Controllers
             return serviceItems;
         }
 
+        [HttpGet]
+        [AllowAnonymous] // TODO only for pagination test, VZ2
+        [Route("{pageIndex:int}/{pageSize:int}")]
+        public PagedResponse<Team> Get(int pageIndex, int pageSize)
+        {
+            var domainTeams = _application.GetAllTeams();
+
+            var serviceTeams = domainTeams.Select(_translator.TranslateToService).ToList();
+            return new PagedResponse<Team>(serviceTeams, pageIndex, pageSize);
+        }
+
         [HttpGet("{id}", Name = "GetTeam")]
         public IActionResult Get(Guid id)
         {

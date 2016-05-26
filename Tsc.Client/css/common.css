@@ -7,3 +7,12 @@
 .myTd {
     vertical-align: middle;
 }
+
+.custom-pagination {
+    display: flex;
+    max-width: 300px;
+    margin: auto;
+    font-size: 20px;
+    flex: 1;
+    text-align: center;  
+}

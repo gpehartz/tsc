@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
 using Tsc.Application;
 using Tsc.WebApi.Mapping;
 using Tsc.WebApi.ServiceModel;
@@ -46,34 +42,15 @@ namespace Tsc.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public IActionResult Post([FromBody]Tournament tournament)
         {
-            const int defaultBufferSize = 81920;
-
-            var formFile = Request.Form.Files[0];
-            if (formFile == null)
+            if (tournament == null)
             {
                 return BadRequest();
             }
 
-            var fileName = Guid.NewGuid() + ContentDispositionHeaderValue.Parse(formFile.ContentDisposition).FileName.Trim('"');
-            fileName = Path.Combine(@"c:\Work\tsc\src\Client\wwwroot\images\", fileName);
-
-            FileStream fileStream = new FileStream(fileName, FileMode.Create);
-            try
-            {
-                await formFile.OpenReadStream().CopyToAsync(fileStream, defaultBufferSize);
-            }
-            finally
-            {
-                fileStream.Dispose();
-            }
-
-            var serviceTournament = JsonConvert.DeserializeObject<Tournament>(Request.Form["tournament"]);
-            serviceTournament.LogoUrl = Path.Combine(@"http://localhost:8000/images/", fileName);
-
-            var tournament = _translator.TranslateToDomain(serviceTournament);
-            var newTournament = _application.AddTournament(tournament);
+            var domainTournament = _translator.TranslateToDomain(tournament);
+            var newTournament = _application.AddTournament(domainTournament);
             return CreatedAtRoute("GetTournament", new { id = newTournament.Id }, newTournament);
         }
 
